@@ -27,7 +27,12 @@ class setupIntersections:
     def CalcIntersect(self, line1, line2, i, j):
     
         rounding = 5
-        if not(line1.unit_vector == line2.unit_vector).all():#If unit vectors are equal, two lines cannot intersect
+        #if not(line1.unit_vector == line2.unit_vector).all():#If unit vectors are equal, two lines cannot intersect
+        if (abs(np.dot(line1.unit_vector, line2.unit_vector)) < 0.99999):
+# =============================================================================
+#             print('line1 : ', line1.unit_vector)
+#             print('line2 : ', line2.unit_vector)
+# =============================================================================
             dA = np.array([line1.A[0] - line2.A[0], 
                            line1.A[1] - line2.A[1],
                            line1.A[2] - line2.A[2]])
@@ -52,7 +57,7 @@ class setupIntersections:
                                              round((line2.A[2] + line2.unit_vector[2]*locVector[1]),rounding)])
             
             
-            margin = 10**-2
+            margin = 10**-4
             if (np.linalg.norm(intersectionLocation1 - intersectionLocation2) < margin):
                 if (np.linalg.norm(dA_check - dA) < margin):
 
@@ -109,6 +114,39 @@ class setupIntersections:
          
         plt.plot(self.xArray, self.yArray, self.zArray, 'o', color = 'black')
         plt.show()
+        
+    def plot_intersections_2dxy(self):
+        #xy
+        plt.figure(figsize = (10, 10))
+        for i in range(len(self.lines)):
+            plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
+                     [self.lines[i].A[1],self.lines[i].B[1]], color = 'b')
+        
+        plt.plot(self.xArray, self.yArray, 'o', color = 'black')
+        plt.show()
+        return()
+    
+    def plot_intersections_2dxz(self):
+        #xy
+        plt.figure(figsize = (10, 10))
+        for i in range(len(self.lines)):
+            plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
+                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
+        
+        plt.plot(self.xArray, self.zArray, 'o', color = 'black')
+        plt.show()
+        return()
+    
+    def plot_intersections_2dyz(self):
+        #xy
+        plt.figure(figsize = (10, 10))
+        for i in range(len(self.lines)):
+            plt.plot([self.lines[i].A[1],self.lines[i].B[1]],
+                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
+        
+        plt.plot(self.yArray, self.zArray, 'o', color = 'black')
+        plt.show()
+        return()
         
 class Intersection:
     def __init__(self, line_1, line_2, intersection_location):

@@ -9,21 +9,7 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys
 import os
-
-Desktop = True
-
-if (Desktop):
-    sys.path.append('C:/Users/lstar/Documents/TUDelft/Jaar3/BEP/Python/Definitief model/Definitief model/Include')
-    sys.path.append('C:/Users/lstar/Documents/TUDelft/Jaar3/BEP/Python/Definitief model/Definitief model/Setups')
-    sys.path.append('C:/Users/lstar/Documents/TUDelft/Jaar3/BEP/Python/Definitief model/Definitief model/Settings')
-else:
-    sys.path.append('C:/Users/lstar/OneDrive/Documenten/BEP/Python/3D_split/1.4/Include')
-    sys.path.append('C:/Users/lstar/OneDrive/Documenten/BEP/Python/3D_split/1.4/Settups')
-    sys.path.append('C:/Users/lstar/OneDrive/Documenten/BEP/Python/3D_split/1.4/Settings')    
-
-
 import settings
 import line
 import line_group
@@ -66,6 +52,34 @@ class Measurement_setup:
         plt.show()
         return()
     
+    def plot_setup_2dxy(self):
+        #xy
+        plt.figure(figsize = (10, 10))
+        for i in range(len(self.lines)):
+            plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
+                     [self.lines[i].A[1],self.lines[i].B[1]], color = 'b')
+        plt.show()
+        return()
+    
+    def plot_setup_2dxz(self):
+        #xy
+        plt.figure(figsize = (10, 10))
+        for i in range(len(self.lines)):
+            plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
+                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
+        plt.show()
+        return()
+    
+    def plot_setup_2dyz(self):
+        #xy
+        plt.figure(figsize = (10, 10))
+        for i in range(len(self.lines)):
+            plt.plot([self.lines[i].A[1],self.lines[i].B[1]],
+                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
+        plt.show()
+        return()
+        
+    
     """
     This function loops through all lines and checks how many different unit vectors the setup has.
     For every new unit vector it makes a new line group and adds the line to that line group.
@@ -91,7 +105,8 @@ class Measurement_setup:
                 self.number_of_linegroups += 1
             else:
                 for j in range(self.number_of_linegroups):
-                    if (self.lines[i].unit_vector == list_unit_vectors[j]).all():
+                    if (np.dot(self.lines[i].unit_vector, list_unit_vectors[j]) >0.9999):
+
                         unit_vector_present = True
                         index = j
                         break
@@ -162,6 +177,9 @@ def Make_Setup(filename):
     print(setup.line_count, 'lines constructed')
     if settings.plot_line_setup:
         setup.plot_setup()
+        setup.plot_setup_2dxy()
+        setup.plot_setup_2dxz()
+        setup.plot_setup_2dyz()
     print('Grouping lines together...')
     setup.MakeLineGroups()
     print('making tubes')
@@ -174,6 +192,9 @@ def Make_Setup(filename):
         setup.SetIntersections()
         if settings.plot_line_intersections:
             setup.intersections.plotIntersections()
+            setup.intersections.plot_intersections_2dxy()
+            setup.intersections.plot_intersections_2dxz()
+            setup.intersections.plot_intersections_2dyz()
         print('making GramMatrix')
         setup.MakeGramMatrix()
         #np.save('..\Output\calculations_'+settings.Name_of_calculation +'\setup.npy', setup)

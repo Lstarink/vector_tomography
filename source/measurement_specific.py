@@ -183,8 +183,7 @@ class Measurement:
         
         x = np.linspace(grid.x_min, grid.x_max, res)
         y = np.linspace(grid.y_min, grid.y_max, res)
-    
-        
+
         u = np.zeros([res, res])
         v = np.zeros([res, res])
         w = np.zeros([res, res])
@@ -271,15 +270,17 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
     measurement.castU0Intersections()
     print('adding everything together...')
     measurement.addFields()
-    measurement.plotIntersectionField()
+    if settings.plot_intersection_field:
+        measurement.plotIntersectionField()
     print('interpolating')
     measurement.Interpolate()
     if settings.plot_interpolated:
         print('sampeling and plotting interpolated field...')
         measurement.PlotInterPolated()
     print('calculating error...')
-    measurement.PlotError(generated_field)
-    measurement.PlotErrorSlices(vector_field)
+    if settings.plot_error:
+        measurement.PlotError(generated_field)
+        measurement.PlotErrorSlices(vector_field)
     return(measurement.final_field)
 
        

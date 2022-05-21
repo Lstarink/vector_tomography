@@ -367,8 +367,9 @@ def Generate_V_average(setup):
     field_sampled_intersections = np.zeros([len(intersections[0]), 3])
     for i in range(len(intersections[0])):
         field_sampled_intersections[i][:] = field1.Sample(intersections[0][i], intersections[1][i], intersections[2][i])
-    
-    plotIntersectionField(field_sampled_intersections, intersections, gridSize)
+
+    if settings.plot_original_field:
+        plotIntersectionField(field_sampled_intersections, intersections, gridSize)
     return(field_sampled_intersections, field1)
        
 if __name__ == "__main__":
