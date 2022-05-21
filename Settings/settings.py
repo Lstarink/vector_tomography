@@ -9,7 +9,7 @@ Created on Tue May 10 19:42:47 2022
 
 """settings for what part of code needs to be rerun"""
 #recalculate_setup =  False
-recalculate_gram_matrix_and_intersections = True
+recalculate_gram_matrix_and_intersections = False
 generate_your_own_measurement = True
 
 """Define what setup you want to use
