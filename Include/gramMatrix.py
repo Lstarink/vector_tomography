@@ -28,7 +28,7 @@ class GramMatrix:
             #print(self.tubes[m].line.unit_vector)
             for n in range(self.size):
                 if (m != n):
-                    if not (self.tubes[m].line.unit_vector == self.tubes[n].line.unit_vector).all():
+                    if (abs(np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)) < 0.99999):
                         if settings.use_integration_for_gram_matrix:
                             tube_intersection = tbi.Tube_intersection(self.tubes[m], self.tubes[n], self.resolution)
                             volume_intersect = tube_intersection.volume_intersect

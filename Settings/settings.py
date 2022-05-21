@@ -16,8 +16,8 @@ generate_your_own_measurement = True
  Define what measurements you want to use
  Define where you want to save intersections and Gram Matrix if recalculating the setup"""
  
-FileName = '3D_setup4.csv'
-Name_of_calculation = 'setup4_numerical'
+FileName = 'final_setup.csv'
+Name_of_calculation = 'final_numerical'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 measurement_file = generated_measurement_file
 
@@ -46,4 +46,6 @@ plot_tube_setup = False
 plot_u0 = False
 plot_interpolated = False
 plot_error = False
+plot_original_field = False
+plot_intersection_field = False
 
