@@ -27,12 +27,7 @@ class setupIntersections:
     def CalcIntersect(self, line1, line2, i, j):
     
         rounding = 5
-        #if not(line1.unit_vector == line2.unit_vector).all():#If unit vectors are equal, two lines cannot intersect
         if (abs(np.dot(line1.unit_vector, line2.unit_vector)) < 0.99999):
-# =============================================================================
-#             print('line1 : ', line1.unit_vector)
-#             print('line2 : ', line2.unit_vector)
-# =============================================================================
             dA = np.array([line1.A[0] - line2.A[0], 
                            line1.A[1] - line2.A[1],
                            line1.A[2] - line2.A[2]])
@@ -63,10 +58,9 @@ class setupIntersections:
 
                     intersectionLocation = intersectionLocation1
                     
-                    if (self.grid.PointInGrid(intersectionLocation)):
+                    if (self.grid.intersection_in_grid(intersectionLocation)):
                         if self.first_intersection:
                             self.first_intersection = False
-                            self.intersection_list.append(Intersection(line1, line2, intersectionLocation))
                             self.coordinate_list.append(intersectionLocation)
                             self.xArray.append(intersectionLocation[0])
                             self.yArray.append(intersectionLocation[1])
@@ -76,11 +70,9 @@ class setupIntersections:
                         else:
                             for k in range(len(self.coordinate_list)):
                                 if (intersectionLocation == self.coordinate_list[k]).all():
-                                    self.intersection_list[k].AddLines(line1, line2)
                                     self.intersectionMatrix[i][j] = 1
                                     break
                             else:
-                                self.intersection_list.append(Intersection(line1, line2, intersectionLocation))
                                 self.coordinate_list.append(intersectionLocation)
                                 self.xArray.append(intersectionLocation[0])
                                 self.yArray.append(intersectionLocation[1])
@@ -147,23 +139,5 @@ class setupIntersections:
         plt.plot(self.yArray, self.zArray, 'o', color = 'black')
         plt.show()
         return()
-        
-class Intersection:
-    def __init__(self, line_1, line_2, intersection_location):
-        self.line_1 = line_1
-        self.line_2 = line_2
-        self.intersection_location = intersection_location
-        self.rank = 2
-        self.line_3 = None
-        
-    def AddLines(self, line_3, line_4):
-        if (line_3 != self.line_1) and (line_3 != self.line_2):
-            self.line_3 = line_3
-            self.rank+=1
-        if (line_4 != self.line_1) and (line_4 != self.line_2):
-            if (self.line_3 == None):
-                self.line_3 = line_4
-            else: 
-                self.line_4 = line_4
-                self.rank += 1
+
                 

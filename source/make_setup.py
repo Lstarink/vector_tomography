@@ -13,7 +13,7 @@ import os
 import settings
 import line
 import line_group
-import intersections as ins
+import setup_intersections as ins
 import gridSize as grid
 import tube as tb
 import gramMatrix as gm

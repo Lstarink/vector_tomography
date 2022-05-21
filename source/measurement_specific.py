@@ -6,15 +6,12 @@ Created on Thu May  5 09:43:58 2022
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator
-from matplotlib.widgets import Slider, Button
-
 import settings
 import sympy as sp
 import vector_field
 import tube_vector_field as tvf
 import interpolated_field as interp
+import intersection
 
 class Measurement:
     def __init__(self, setup):
@@ -84,10 +81,19 @@ class Measurement:
         
         for i in range(len(x)):
             self.u0Casted[i][:] = self.u0.Sample(x[i],y[i],z[i])
-    
-    def addFieldsIntersections(field1, field2, size):
+
+    def make_intersection_instances(self):
+        self.intersection_instances = []
+        for i in range(len(self.intersections[0])):
+            self.intersection_instances.append(intersection.Intersection([self.intersections[0][i],
+                                                                         self.intersections[1][i],
+                                                                         self.intersections[2][i]]))
+    def addFieldsIntersections(self, field1, field2, size):
         fieldCombined = np.zeros([size, 3])
         for i in range(size):
+            if not(field2[i][0] == 0 and field2[i][1] == 0 and field2[i][2] == 0):
+                self.intersection_instances[i].add_tube()
+                self.intersection_instances[i].add_vector(field2[i])
             for k in range(3):
                 fieldCombined[i][k] = field1[i][k] + field2[i][k]
         
@@ -97,9 +103,27 @@ class Measurement:
         fieldsum = self.u0Casted
         
         for i in range(len(self.UDeltaList)):
-            fieldsum = Measurement.addFieldsIntersections(fieldsum, self.UDeltaList[i].fieldIntersections, len(self.intersections[0]))
+            fieldsum = Measurement.addFieldsIntersections(self, fieldsum, self.UDeltaList[i].fieldIntersections, len(self.intersections[0]))
         
         self.final_field = fieldsum
+
+    def calculate_rank(self):
+        rank_list = []
+        tube_present_list = []
+
+        for i in range(len(self.intersections[0])):
+            self.intersection_instances[i].determine_rank()
+            rank_list.append(self.intersection_instances[i].rank)
+            tube_present_list.append(self.intersection_instances[i].tubes_present)
+
+        print(rank_list.count(2), 'intersections of rank 2')
+        print(rank_list.count(3), 'intersections of full rank')
+        print(tube_present_list.count(2), 'intersections with 2 tubes present')
+        print(tube_present_list.count(3), 'intersections with 3 tubes present')
+        print(tube_present_list.count(4), 'intersections with 4 tubes present')
+        print(tube_present_list.count(5), 'intersections with 5 tubes present')
+        more_tubes_present = len(self.intersections[0]) - tube_present_list.count(2) - tube_present_list.count(3) - tube_present_list.count(4) - tube_present_list.count(5)
+        print(more_tubes_present, 'intersections with more than 5 tubes present')
         
     def plotIntersectionField(self):
         x = self.intersections[0]
@@ -266,10 +290,13 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
     measurement.SolveGramMatrix()
     print('Making tube_vector_fields')
     measurement.MakeTubeVectorFields()
+    measurement.make_intersection_instances()
     print('CastU0')
     measurement.castU0Intersections()
     print('adding everything together...')
     measurement.addFields()
+    print('calculating rank of intersections...')
+    measurement.calculate_rank()
     if settings.plot_intersection_field:
         measurement.plotIntersectionField()
     print('interpolating')

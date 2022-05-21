@@ -6,6 +6,7 @@ Created on Thu May  5 12:31:15 2022
 """
 
 import numpy as np
+import settings
 
 class gridSize:
     def __init__(self, lines):
@@ -71,3 +72,12 @@ class gridSize:
         else:
             return(False)
                             
+    def intersection_in_grid(self, point):
+        boundary_edge = settings.intersection_boundary_edge
+        if (point[0] >= self.size[0] + boundary_edge) and (point[0] <= self.size[3] - boundary_edge):
+            if (point[1] >= self.size[1] + boundary_edge) and (point[1] <= self.size[4] - boundary_edge):
+                if (point[2] >= self.size[2] + boundary_edge) and (point[2] <= self.size[5] - boundary_edge):
+                    return True
+
+        else:
+            return False
