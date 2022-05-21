@@ -6,7 +6,7 @@ Created on Mon May  9 19:05:15 2022
 """
 import matplotlib.pyplot as plt
 import numpy as np
-import intersections
+import setup_intersections
 
 class Tube_intersection:
     def __init__(self, tube1, tube2, resolution):

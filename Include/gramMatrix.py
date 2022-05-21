@@ -250,7 +250,7 @@ def main():
     import line as ln
     import tube as tb
     import gridSize as grid
-    import intersections as ints
+    import setup_intersections as ints
     
     width = 0.01
     

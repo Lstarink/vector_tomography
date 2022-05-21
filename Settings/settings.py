@@ -17,9 +17,12 @@ generate_your_own_measurement = True
  Define where you want to save intersections and Gram Matrix if recalculating the setup"""
  
 FileName = 'final_setup.csv'
-Name_of_calculation = 'final_numerical'
+Name_of_calculation = 'calculations_final_numerical'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 measurement_file = generated_measurement_file
+
+"""Settings for intersections"""
+intersection_boundary_edge = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
 
 """Settings for error of the sensors"""
 use_sensor_error = True
@@ -28,7 +31,7 @@ sensor_stddev = 0.000166 #meters
 """Settings for Gram Matrix"""
 use_integration_for_gram_matrix = False
 matrix_integration_setting = 20 #If used needs alot of calculation time, and value has to be set to at least 100
-tube_width = 0.0002
+tube_width = 0.02
 
 """Settings for reconstruction of the field"""
 line_integral_iteration_steps = 100
@@ -45,7 +48,7 @@ plot_line_intersections = False and recalculate_gram_matrix_and_intersections
 plot_tube_setup = False
 plot_u0 = False
 plot_interpolated = False
-plot_error = True
-plot_original_field = True
-plot_intersection_field = True
+plot_error = False
+plot_original_field = False
+plot_intersection_field = False
 
