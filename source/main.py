@@ -30,5 +30,3 @@ def main():
     final_field = measurement_specific.make_measurement_calculation(setup, sampled_field, vector_field)
 
 main()
-#lemme see if i can push a new branch to git
-#somethingsomething
