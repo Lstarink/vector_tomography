@@ -107,6 +107,14 @@ class Measurement:
         
         self.final_field = fieldsum
 
+    def addFieldsIntersectionsFullRank(self, field1, field2, size):
+        fieldCombined = np.zeros([size, 3])
+        for i in range(size):
+            for k in range(3):
+                fieldCombined[i][k] = field1[i][k] + field2[i][k]
+
+        return (fieldCombined)
+
     def calculate_rank(self):
         rank_list = []
         tube_present_list = []
@@ -124,7 +132,33 @@ class Measurement:
         print(tube_present_list.count(5), 'intersections with 5 tubes present')
         more_tubes_present = len(self.intersections[0]) - tube_present_list.count(2) - tube_present_list.count(3) - tube_present_list.count(4) - tube_present_list.count(5)
         print(more_tubes_present, 'intersections with more than 5 tubes present')
-        
+
+        self.full_rank_indices = [i for i, x in enumerate(rank_list) if x == 3]
+
+    def calculate_full_rank_field(self):
+        full_rank_intersection_field = np.zeros([len(self.full_rank_indices), 3])
+        full_rank_intersections = np.zeros([3, len(self.full_rank_indices)])
+
+        index = 0
+        for i in self.full_rank_indices:
+            for j in range(3):
+                full_rank_intersection_field[index][j] = self.final_field[i][j]
+                full_rank_intersections[j][index] = self.intersections[j][i]
+            index += 1
+
+        self.final_field = full_rank_intersection_field
+        self.intersections = full_rank_intersections
+
+    def cast_generated_field(self, generated_field):
+        full_rank_generated_field = np.zeros([len(self.full_rank_indices), 3])
+        index = 0
+        for i in self.full_rank_indices:
+            for j in range(3):
+                full_rank_generated_field[index][j] = generated_field[i][j]
+            index +=1
+        return full_rank_generated_field
+
+
     def plotIntersectionField(self):
         x = self.intersections[0]
         y = self.intersections[1]
@@ -167,7 +201,7 @@ class Measurement:
         plt.show()
          
     def Interpolate(self):
-        self.interpolated_field = interp.InterpolatedField(self.setup, self.final_field)
+        self.interpolated_field = interp.InterpolatedField(self.setup, self.final_field, self.intersections)
         self.interpolated_field.SetLambdas()
         print('Interpolation working properly is', self.interpolated_field.TestInterpolatedField())
         
@@ -297,6 +331,9 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
     measurement.addFields()
     print('calculating rank of intersections...')
     measurement.calculate_rank()
+    if settings.use_only_full_rank_intersections:
+        measurement.calculate_full_rank_field()
+        generated_field = measurement.cast_generated_field(generated_field)
     if settings.plot_intersection_field:
         measurement.plotIntersectionField()
     print('interpolating')

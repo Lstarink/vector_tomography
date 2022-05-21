@@ -184,17 +184,18 @@ def Make_Setup(filename):
     setup.MakeLineGroups()
     print('making tubes')
     setup.MakeTubes(settings.tube_width)
-    if settings.recalculate_gram_matrix_and_intersections:
+    print('calculating intersections')
+    setup.SetIntersections()
+    if settings.plot_line_intersections:
+        setup.intersections.plotIntersections()
+        setup.intersections.plot_intersections_2dxy()
+        setup.intersections.plot_intersections_2dxz()
+        setup.intersections.plot_intersections_2dyz()
+    if settings.recalculate_gram_matrix:
         print('Making directory for output files')
         setup.MakeDirectory()
         print(setup.number_of_linegroups, 'groups of parallel lines found')
-        print('calculating intersections')
-        setup.SetIntersections()
-        if settings.plot_line_intersections:
-            setup.intersections.plotIntersections()
-            setup.intersections.plot_intersections_2dxy()
-            setup.intersections.plot_intersections_2dxz()
-            setup.intersections.plot_intersections_2dyz()
+
         print('making GramMatrix')
         setup.MakeGramMatrix()
         #np.save('..\Output\calculations_'+settings.Name_of_calculation +'\setup.npy', setup)
