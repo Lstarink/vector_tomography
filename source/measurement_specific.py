@@ -278,8 +278,9 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
         print('sampeling and plotting interpolated field...')
         measurement.PlotInterPolated()
     print('calculating error...')
-    measurement.PlotError(generated_field)
-    measurement.PlotErrorSlices(vector_field)
+    if settings.plot_error:
+        measurement.PlotError(generated_field)
+        measurement.PlotErrorSlices(vector_field)
     return(measurement.final_field)
 
        

@@ -16,8 +16,8 @@ generate_your_own_measurement = True
  Define what measurements you want to use
  Define where you want to save intersections and Gram Matrix if recalculating the setup"""
  
-FileName = '3D_setup2.csv'
-Name_of_calculation = 'setup2_Analytical'
+FileName = '3D_setup4.csv'
+Name_of_calculation = 'setup4_numerical'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 measurement_file = generated_measurement_file
 
@@ -39,9 +39,11 @@ plot_interpolated_slices = 4
 slice_height_z = 0.5
 
 """Settings for plotting"""
-plot_line_setup = True
+plot_line_setup = False
 plot_tube_intersections = False and use_integration_for_gram_matrix
 plot_line_intersections = True and recalculate_gram_matrix_and_intersections
 plot_tube_setup = False
 plot_u0 = False
-plot_interpolated = True
+plot_interpolated = False
+plot_error = False
+
