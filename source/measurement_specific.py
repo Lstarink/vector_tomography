@@ -266,10 +266,14 @@ class Measurement:
                 w_orig[i][j] = vector_original[2]
                 
                 norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
+                #TODO find something prettier for this
+                if norm_v_original == 0:
+                    norm_v_original += 0.01
+
                 if (norm_v_original != 0):
                     error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                             (v[i][j] - v_orig[i][j]),
-                                                            (w[i][j] - w_orig[i][j])])))#/(norm_v_original))
+                                                            (w[i][j] - w_orig[i][j])])))/(norm_v_original)
 
         def ShowError(x, y, error):                               
             fig1 = plt.figure(figsize=(15,15))
@@ -344,6 +348,7 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
     print('calculating error...')
     if settings.plot_error:
         measurement.PlotError(generated_field)
+    if settings.plot_error_sliced:
         measurement.PlotErrorSlices(vector_field)
     return(measurement.final_field)
 
