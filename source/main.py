@@ -10,7 +10,6 @@ import measurementgenerator
 import measurement_specific
 import settings
 
-
 def main():
     """load_data.Make_setup makes an instance of Measurement_Setup. Depending on if recalculate_setup in the settings is on it will 
     calculate all attributes of a measurement setup that are independent of measurements, primarily the Gram Matrix and the line intersection points
@@ -30,6 +29,5 @@ def main():
         
     final_field = measurement_specific.make_measurement_calculation(setup, sampled_field, vector_field)
 
-      
-    
 main()
+#lemme see if i can push a new branch to git
