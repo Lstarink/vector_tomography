@@ -19,7 +19,7 @@ class tube:
         tube.tube_angles(self)
      
     def CalculateArea(self):
-        area = self.width**2 #calculation for square tubes to keep things simpler when calculating tube volume intersect
+        area = 0.25*np.pi*self.width**2 #calculation for square tubes to keep things simpler when calculating tube volume intersect
         return(area)
     
     def CalculateVolume(self):
@@ -72,27 +72,44 @@ class tube:
         return (cylinder)
     
     def tube_angles(self):
-        if (self.line.unit_vector[0] != 0):
-            theta1 = np.arctan(self.line.unit_vector[1]/
-                            self.line.unit_vector[0])
+        x, y, z = self.line.unit_vector[0], self.line.unit_vector[1], self.line.unit_vector[2]
+
+        #phi for elevation
+        #theta for azimuth
+
+        x_abs, y_abs, z_abs = abs(x), abs(y), abs(z)
+
+        phi_0 = np.arccos(z)
+
+        if (x_abs != 0):
+            theta_0 = np.arctan(y_abs/x_abs)
         else:
-            theta1 = np.pi/2
-        
-        if (self.line.unit_vector[0]<0):
-            theta1 = theta1 + np.pi
-        
-        if (self.line.unit_vector[2] != 0):
-            phi1 = np.arctan(((self.line.unit_vector[0]**2 +self.line.unit_vector[1]**2)**0.5)/
-                              self.line.unit_vector[2])
+            theta_0 = np.pi/2
+
+
+        if (x > 0):
+            if (y>0):
+                #quadrant 1
+                theta = theta_0
+            else:
+                #quadrant 4
+                theta = -theta_0
         else:
-            phi1 = np.pi/2
-        
-        if (self.line.unit_vector[2]<0):
-            phi1 = phi1 + np.pi
-            
-        self.phi = phi1
-        self.theta = theta1
-    
+            if (y>0):
+                #quadrant 2
+                theta = np.pi - theta_0
+            else:
+                # quadrant 3
+                theta = theta_0 + np.pi
+
+        if (z > 0):
+            phi = phi_0
+        else:
+            phi = np.pi - phi_0
+
+        self.phi = phi
+        self.theta = theta
+
     def Parametric_tube(self):
 
         cylinder1 = tube.basis_cylinder_along_z(self.width, self.line.length)
