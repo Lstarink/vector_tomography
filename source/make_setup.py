@@ -184,6 +184,8 @@ def Make_Setup(filename):
     setup.MakeLineGroups()
     print('making tubes')
     setup.MakeTubes(settings.tube_width)
+    print('Making directory for output files')
+    setup.MakeDirectory()
     print('calculating intersections')
     setup.SetIntersections()
     if settings.plot_line_intersections:
@@ -192,8 +194,6 @@ def Make_Setup(filename):
         setup.intersections.plot_intersections_2dxz()
         setup.intersections.plot_intersections_2dyz()
     if settings.recalculate_gram_matrix:
-        print('Making directory for output files')
-        setup.MakeDirectory()
         print(setup.number_of_linegroups, 'groups of parallel lines found')
 
         print('making GramMatrix')
