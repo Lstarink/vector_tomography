@@ -12,6 +12,7 @@ import vector_field
 import tube_vector_field as tvf
 import interpolated_field as interp
 import intersection
+import error
 
 class Measurement:
     def __init__(self, setup):
@@ -232,85 +233,22 @@ class Measurement:
         ax = fig.add_subplot(111, projection='3d')
         ax.quiver(X, Y, Z, u, v, w)
         plt.show()
-        
 
-    def PlotErrorSliceZ(self, vector_field, z):
-        
-        grid = self.setup.grid
-        res = settings.plot_interpolated_resolution
-        
-        x = np.linspace(grid.x_min, grid.x_max, res)
-        y = np.linspace(grid.y_min, grid.y_max, res)
+    def plot_error_slices(self, vector_field):
+        x = np.linspace(self.setup.grid.x_min, self.setup.grid.x_max, settings.plot_amount_of_interpolated_slices)
+        y = np.linspace(self.setup.grid.y_min, self.setup.grid.y_max, settings.plot_amount_of_interpolated_slices)
+        z = np.linspace(self.setup.grid.z_min, self.setup.grid.z_max, settings.plot_amount_of_interpolated_slices)
 
-        u = np.zeros([res, res])
-        v = np.zeros([res, res])
-        w = np.zeros([res, res])
-        
-        u_orig = np.zeros([res, res])
-        v_orig = np.zeros([res, res])
-        w_orig = np.zeros([res, res])
-        
-        error = np.zeros([res, res])
-        
-            
-        for i in range(res):
-            for j in range(res):
-                vector = self.interpolated_field.SampleField(np.array([x[i], y[j], z]))
-                u[i][j] = vector[0]
-                v[i][j] = vector[1]
-                w[i][j] = vector[2]
-                
-                vector_original = vector_field.Sample(x[i], y[j], z)
-                u_orig[i][j] = vector_original[0]
-                v_orig[i][j] = vector_original[1]
-                w_orig[i][j] = vector_original[2]
-                
-                norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                #TODO find something prettier for this
-                if norm_v_original == 0:
-                    norm_v_original += 0.01
+        error_ = error.Error(vector_field, self.interpolated_field, self.setup.grid)
 
-                if (norm_v_original != 0):
-                    error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
-                                                            (v[i][j] - v_orig[i][j]),
-                                                            (w[i][j] - w_orig[i][j])])))/(norm_v_original)
+        for i in range(settings.plot_amount_of_interpolated_slices):
+            error_.SliceZ(z[i])
 
-        def ShowError(x, y, error):                               
-            fig1 = plt.figure(figsize=(15,15))
-            img1 = plt.contourf(x, y, error, 100)
-            fig1.colorbar(img1)
-            plt.title('Relative in plane error at z =' + str(z))
-            plt.show()
-        
-        def ShowQuiver(x, y, u, v):
-            X, Y = np.meshgrid(x, y)       
-            plt.figure(figsize=(15,15))
-            plt.quiver(X,Y, v, u)
-            plt.title('Reconstructed Field')
-            plt.gca().set_aspect('equal', adjustable='box')
-            plt.show()
-            
-        def ShowQuiver_original(x, y, u, v):
-            X, Y = np.meshgrid(x, y)       
-            plt.figure(figsize=(15,15))
-            plt.quiver(X,Y, v, u)
-            plt.title('Original Field')
-            plt.gca().set_aspect('equal', adjustable='box')
-            plt.show()
-        
-        ShowError(x, y, error)
-        ShowQuiver(x, y, u, v)
-        ShowQuiver_original(x, y, u_orig, v_orig)
-                                    
+        for i in range(settings.plot_amount_of_interpolated_slices):
+            error_.SliceY(y[i])
 
-    def PlotErrorSlices(self, vector_field):
-        z = np.linspace(self.setup.grid.z_min, self.setup.grid.z_max, settings.plot_interpolated_slices)
-        
-        for i in range(len(z)):
-            Measurement.PlotErrorSliceZ(self, vector_field, z[i])
-            
-            
-        
+        for i in range(settings.plot_amount_of_interpolated_slices):
+            error_.SliceX(x[i])
                 
 def  make_measurement_calculation(setup, generated_field, vector_field):
     print('loading files...')
@@ -349,7 +287,7 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
     if settings.plot_error:
         measurement.PlotError(generated_field)
     if settings.plot_error_sliced:
-        measurement.PlotErrorSlices(vector_field)
+        measurement.plot_error_slices(vector_field)
     return(measurement.final_field)
 
        
