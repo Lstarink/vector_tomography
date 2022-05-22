@@ -25,7 +25,8 @@ class GramMatrix:
     def MakeGramMatrix(self):
         #dot_unit_vector_matrix = np.zeros([self.size, self.size])
         for m in range(self.size):
-            #print(self.tubes[m].line.unit_vector)
+            if settings.use_integration_for_gram_matrix:
+                print('Gram Matrix: ', (m / self.size)*100, '%')
             for n in range(self.size):
                 if (m != n):
                     if (abs(np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)) < 0.99999):
@@ -190,7 +191,7 @@ class GramMatrix:
                
         return(rotated_item)
 
-    def translate_something(vector, item_to_translate):
+    def translate_something(self, vector, item_to_translate):
         shape = item_to_translate.shape
         
         translated_item = np.zeros([shape[0], shape[1], shape[2]])
@@ -203,7 +204,7 @@ class GramMatrix:
                
         return(translated_item)    
 
-    def ClosestPoint(line1, line2):
+    def ClosestPoint(self, line1, line2):
                 #find point closest to both lines
         rounding = 5
         dA = np.array([line1.A[0] - line2.A[0], 
