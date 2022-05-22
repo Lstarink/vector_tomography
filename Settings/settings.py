@@ -8,8 +8,8 @@ Created on Tue May 10 19:42:47 2022
 """All settings go in this file"""
 
 """settings for what part of code needs to be rerun"""
-only_calculate_setup = True
-recalculate_gram_matrix = True
+only_calculate_setup = False
+recalculate_gram_matrix = False
 generate_your_own_measurement = True
 
 """Define what setup you want to use
@@ -17,13 +17,13 @@ generate_your_own_measurement = True
  Define where you want to save intersections and Gram Matrix if recalculating the setup"""
  
 FileName = 'final_setup.csv'
-Name_of_calculation = 'final_setup_0.25@75'
+Name_of_calculation = 'NUMERICAL_0.02@50'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 measurement_file = generated_measurement_file
 
 """Settings for intersections"""
 intersection_boundary_edge = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
-use_only_full_rank_intersections = False
+use_only_full_rank_intersections = True
 
 """Settings for error of the sensors"""
 use_sensor_error = False
@@ -32,7 +32,7 @@ sensor_stddev = 0.00166 #meters
 """Settings for Gram Matrix"""
 use_integration_for_gram_matrix = True
 matrix_integration_setting = 75 #If used needs alot of calculation time, and value has to be set to at least 100
-tube_width = 0.025
+tube_width = 0.02
 
 """Settings for reconstruction of the field"""
 line_integral_iteration_steps = 100
@@ -52,6 +52,6 @@ plot_original_field = False
 plot_intersection_field = False
 plot_interpolated = False
 plot_error = False
-plot_error_sliced = True
+plot_error_sliced = False
 
 

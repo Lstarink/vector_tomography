@@ -246,7 +246,7 @@ class Measurement:
         y = np.linspace(self.setup.grid.y_min, self.setup.grid.y_max, settings.plot_amount_of_interpolated_slices)
         z = np.linspace(self.setup.grid.z_min, self.setup.grid.z_max, settings.plot_amount_of_interpolated_slices)
 
-        error_ = error.Error(vector_field, self.interpolated_field, self.setup.grid)
+        error_ = error.Error(vector_field, self.interpolated_field, self.setup.grid, self.intersections)
 
         for i in range(settings.plot_amount_of_interpolated_slices):
             error_.SliceZ(z[i])
@@ -256,7 +256,12 @@ class Measurement:
 
         for i in range(settings.plot_amount_of_interpolated_slices):
             error_.SliceX(x[i])
-                
+
+    def calculate_global_error(self, vector_field):
+        error_ = error.Error(vector_field, self.interpolated_field, self.setup.grid, self.intersections)
+        error_.Intersection_error()
+        error_.Global_Error()
+
 def  make_measurement_calculation(setup, generated_field, vector_field):
     print('loading files...')
     measurement = Measurement(setup)
@@ -295,6 +300,7 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
         measurement.PlotError(generated_field)
     if settings.plot_error_sliced:
         measurement.plot_error_slices(vector_field)
+    measurement.calculate_global_error(vector_field)
     return(measurement.final_field)
 
        
