@@ -39,7 +39,7 @@ line_integral_iteration_steps = 100
 
 """Settings for interpolation"""
 plot_interpolated_resolution = 11
-plot_interpolated_slices = 4
+plot_amount_of_interpolated_slices = 3
 slice_height_z = 0.5
 
 """Settings for plotting"""
@@ -52,6 +52,6 @@ plot_original_field = False
 plot_intersection_field = False
 plot_interpolated = True
 plot_error = True
-plot_error_sliced = False
+plot_error_sliced = True
 
 
