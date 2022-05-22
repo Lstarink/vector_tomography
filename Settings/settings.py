@@ -39,12 +39,12 @@ line_integral_iteration_steps = 100
 
 """Settings for interpolation"""
 plot_interpolated_resolution = 11
-plot_interpolated_slices = 4
+plot_amount_of_interpolated_slices = 4
 slice_height_z = 0.5
 
 """Settings for plotting"""
 plot_line_setup = False
-plot_tube_setup = False
+plot_tube_setup = True
 plot_tube_intersections = True and use_integration_for_gram_matrix
 plot_line_intersections = False and use_integration_for_gram_matrix
 plot_u0 = False
