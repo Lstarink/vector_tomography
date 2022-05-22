@@ -30,7 +30,7 @@ use_sensor_error = True
 sensor_stddev = 0.000166 #meters
 
 """Settings for Gram Matrix"""
-use_integration_for_gram_matrix = True
+use_integration_for_gram_matrix = False
 matrix_integration_setting = 25 #If used needs alot of calculation time, and value has to be set to at least 100
 tube_width = 0.02
 
@@ -49,9 +49,9 @@ plot_line_intersections = False and use_integration_for_gram_matrix
 plot_tube_setup = False
 plot_u0 = False
 plot_original_field = False
-plot_intersection_field = True
+plot_intersection_field = False
 plot_interpolated = True
 plot_error = True
-plot_error_sliced = True
+plot_error_sliced = False
 
 

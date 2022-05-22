@@ -12,6 +12,7 @@ import vector_field
 import tube_vector_field as tvf
 import interpolated_field as interp
 import intersection
+import error
 
 class Measurement:
     def __init__(self, setup):
@@ -310,7 +311,12 @@ class Measurement:
             Measurement.PlotErrorSliceZ(self, vector_field, z[i])
             
             
-        
+    def plot_error_slices(self, vector_field):
+        z = np.linspace(self.setup.grid.z_min, self.setup.grid.z_max, settings.plot_interpolated_slices)
+
+        error_ = error.Error(vector_field, self.interpolated_field, self.setup.grid)
+        for i in range(len(z)):
+            error_.SliceZ(z[i])
                 
 def  make_measurement_calculation(setup, generated_field, vector_field):
     print('loading files...')
@@ -350,6 +356,7 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
         measurement.PlotError(generated_field)
     if settings.plot_error_sliced:
         measurement.PlotErrorSlices(vector_field)
+    measurement.plot_error_slices(vector_field)
     return(measurement.final_field)
 
        
