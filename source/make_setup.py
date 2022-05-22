@@ -219,8 +219,6 @@ class Measurement_setup:
             print("Directory ", file_save_dir,  " already exists")
 
 
-        
-
 def Make_Setup(filename):
 
     print('Loading data file...')

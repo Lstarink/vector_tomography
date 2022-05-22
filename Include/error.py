@@ -11,7 +11,7 @@ class Error:
     def sample_fields(self, point):
         original_vector = self.original_field.Sample(point[0], point[1], point[2])
         reconstructed_vector = self.reconstructed_field.SampleField(point)
-        return(original_vector, reconstructed_vector)
+        return(reconstructed_vector, original_vector)
 
 
     def SliceX(self, x):
@@ -50,7 +50,7 @@ class Error:
                 if (norm_v_original != 0):
                     error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                             (v[i][j] - v_orig[i][j]),
-                                                            (w[i][j] - w_orig[i][j])])))# / (norm_v_original)
+                                                            (w[i][j] - w_orig[i][j])])))/(norm_v_original)
 
         Error.ShowError(self, y, z, error, x, 'x')
         Error.ShowQuiver(self, y, z, v, w, x, 'x')
@@ -92,7 +92,7 @@ class Error:
                 if (norm_v_original != 0):
                     error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                             (v[i][j] - v_orig[i][j]),
-                                                            (w[i][j] - w_orig[i][j])])))# / (norm_v_original)
+                                                            (w[i][j] - w_orig[i][j])])))/(norm_v_original)
 
         Error.ShowError(self, x, z, error, y, 'y')
         Error.ShowQuiver(self, x, z, u, w, y, 'y')
@@ -134,7 +134,7 @@ class Error:
                 if (norm_v_original != 0):
                     error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                             (v[i][j] - v_orig[i][j]),
-                                                            (w[i][j] - w_orig[i][j])])))# / (norm_v_original)
+                                                            (w[i][j] - w_orig[i][j])])))/(norm_v_original)
 
         Error.ShowError(self, x, y, error, z, 'z')
         Error.ShowQuiver(self, x, y, u, v, z, 'z')
