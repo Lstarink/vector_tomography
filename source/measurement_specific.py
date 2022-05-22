@@ -170,7 +170,10 @@ class Measurement:
         fig = plt.figure(figsize=(15,15))
         ax = fig.add_subplot(111, projection='3d')
         ax.quiver(x, y, z, field[:,0], field[:,1], field[:,2])
-    
+        plt.title('Reconstructed field sampled at intersections')
+        ax.set_xlabel('x as [m]')
+        ax.set_ylabel('y as [m]')
+        ax.set_zlabel('z as [m]')
         ax.plot(x,y,z,'o', color = 'black')
         for i in range(len(self.setup.lines)):
             ax.plot([self.setup.lines[i].A[0],self.setup.lines[i].B[0]],
@@ -231,6 +234,10 @@ class Measurement:
         
         fig = plt.figure(figsize=(15,15))
         ax = fig.add_subplot(111, projection='3d')
+        plt.title('Interpolated field')
+        ax.set_xlabel('x as [m]')
+        ax.set_ylabel('y as [m]')
+        ax.set_zlabel('z as [m]')
         ax.quiver(X, Y, Z, u, v, w)
         plt.show()
 

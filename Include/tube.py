@@ -112,9 +112,8 @@ class tube:
 
     def Parametric_tube(self):
 
-        cylinder1 = tube.basis_cylinder_along_z(self.width, self.line.length)
-            
-                
+        cylinder1 = tube.basis_cylinder_along_z(self.width/2, self.line.length)
+
         cylinder1_rotated_once = tube.rotate_something('y', self.phi, cylinder1)
         cylinder1_rotated_twice = tube.rotate_something('z', self.theta, cylinder1_rotated_once)
         cylinder1_translated = tube.translate_something(self.line.A, cylinder1_rotated_twice)
