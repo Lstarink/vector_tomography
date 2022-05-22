@@ -31,14 +31,14 @@ class GramMatrix:
                 if (m != n):
                     if (abs(np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)) < 0.99999):
                         if settings.use_integration_for_gram_matrix:
-                            tube_intersection = tbi.Tube_intersection(self.tubes[m], self.tubes[n], self.resolution)
+                            tube_intersection = tbi.Tube_intersection(self.tubes[m], self.tubes[n], self.resolution, self.intersection_matrix[m][n], self.grid_size)
                             volume_intersect = tube_intersection.volume_intersect
                             volume_check = tube_intersection.v_check
                         else:
                             #print('used analytical gram matrix calculation')
                             volume_intersect = GramMatrix.TubesVolumeIntersectAnalytical(self.tubes, m, n, self.intersection_matrix)
                             #print(self.intersection_matrix)
-                        if settings.plot_tube_intersections:
+                        if settings.plot_tube_intersections and (volume_intersect != volume_check): #only plot nontrivial cases
                             GramMatrix.PlotTwoTubes(self, self.tubes[m], self.tubes[n], volume_intersect, volume_check)
                     else:
                         volume_intersect = 0 #This only holds if tubewidth smaller than distance between parallel lines
@@ -95,48 +95,19 @@ class GramMatrix:
         cylinder1 = GramMatrix.basis_cylinder_along_z(tube1.width, tube1.line.length)
         cylinder2 = GramMatrix.basis_cylinder_along_z(tube2.width, tube2.line.length)
             
-        if (tube1.line.unit_vector[0] != 0):
-            theta1 = np.arctan(tube1.line.unit_vector[1]/
-                            tube1.line.unit_vector[0])
-        else:
-            theta1 = np.pi/2
-        
-        if (tube1.line.unit_vector[0]<0):
-            theta1 = theta1 + np.pi
-        
-        if (tube1.line.unit_vector[2] != 0):
-            phi1 = np.arctan(((tube1.line.unit_vector[0]**2 +tube1.line.unit_vector[1]**2)**0.5)/
-                              tube1.line.unit_vector[2])
-        else:
-            phi1 = np.pi/2
-        
-        if (tube1.line.unit_vector[2]<0):
-            phi1 = phi1 + np.pi
-        
-        if (tube2.line.unit_vector[0] != 0):
-            theta2 = np.arctan(tube2.line.unit_vector[1]/
-                            tube2.line.unit_vector[0])
-        else:
-            theta2 = np.pi/2
-        if (tube2.line.unit_vector[0]<0):
-            theta2 = theta2 + np.pi
-            
-        if (tube2.line.unit_vector[2] != 0):
-            phi2 = np.arctan(((tube2.line.unit_vector[0]**2 +tube2.line.unit_vector[1]**2)**0.5)/
-                              tube2.line.unit_vector[2])
-        else:
-            phi2 = np.pi/2
+        phi1 = tube1.phi
+        theta1 = tube1.theta
 
-        if (tube2.line.unit_vector[2]<0):
-            phi2 = phi2 + np.pi
+        phi2 = tube2.phi
+        theta2 = tube2.theta
         
-        cylinder1_rotated_once = GramMatrix.rotate_something('y', phi1, cylinder1)
-        cylinder1_rotated_twice = GramMatrix.rotate_something('z', theta1, cylinder1_rotated_once)
-        cylinder1_translated = GramMatrix.translate_something(tube1.line.A, cylinder1_rotated_twice)
+        cylinder1_rotated_once = GramMatrix.rotate_something(self, 'y', phi1, cylinder1)
+        cylinder1_rotated_twice = GramMatrix.rotate_something(self, 'z', theta1, cylinder1_rotated_once)
+        cylinder1_translated = GramMatrix.translate_something(self, tube1.line.A, cylinder1_rotated_twice)
         
-        cylinder2_rotated_once = GramMatrix.rotate_something('y', phi2, cylinder2)
-        cylinder2_rotated_twice = GramMatrix.rotate_something('z', theta2, cylinder2_rotated_once)
-        cylinder2_translated = GramMatrix.translate_something(tube2.line.A, cylinder2_rotated_twice)
+        cylinder2_rotated_once = GramMatrix.rotate_something(self, 'y', phi2, cylinder2)
+        cylinder2_rotated_twice = GramMatrix.rotate_something(self, 'z', theta2, cylinder2_rotated_once)
+        cylinder2_translated = GramMatrix.translate_something(self, tube2.line.A, cylinder2_rotated_twice)
         
         fig = plt.figure(figsize=(10,10))
         ax = fig.add_subplot(111, projection='3d')
@@ -157,7 +128,7 @@ class GramMatrix:
         plt.show()
         return()
                 
-    def rotate_something(axis, theta, item_to_rotate):
+    def rotate_something(self, axis, theta, item_to_rotate):
     
         if (axis == 'x'):
             rotation_matrix = np.array([[1,  0,  0],

@@ -6,48 +6,43 @@ Created on Mon May  9 19:05:15 2022
 """
 import matplotlib.pyplot as plt
 import numpy as np
+import gridSize
 import setup_intersections
 
 class Tube_intersection:
-    def __init__(self, tube1, tube2, resolution):
+    def __init__(self, tube1, tube2, resolution, line_intersect, grid_size):
         self.tube1 = tube1
         self.tube2 = tube2
         self.res = resolution
-        self.point_on_tube, self.closest_point = Tube_intersection.ClosestPoint(self)        
-        self.intersection_angle = Tube_intersection.CalculateIntersectionAngle(self)
-        Tube_intersection.integrate_tube(self)
-        self.volume_intersect = 0
-        Tube_intersection.VolumeIntersect(self)
+        self.line_intersect = line_intersect
+        self.grid_size = grid_size
+        self.point_on_tube, self.closest_point = Tube_intersection.ClosestPoint(self)
+        if self.can_intersect:
+            self.intersection_angle = Tube_intersection.CalculateIntersectionAngle(self)
+            if (self.line_intersect == 1) and (abs(self.intersection_angle - np.pi / 2) < 0.001):
+                # Trivial case for tubes with intersecting lines and right angle
+                self.volume_intersect = (2 / 3) * self.tube1.width ** 3
+                self.v_check = self.volume_intersect
+            else:
+                Tube_intersection.integrate_tube(self)
+                self.volume_intersect = 0
+                Tube_intersection.VolumeIntersect(self)
+        else:
+            self.volume_intersect, self.v_check = 0, 0
            
     def VolumeIntersect(self):
+       self.v_check = 0.25 * np.pi * 2 * self.delta_on_axis * self.tube1.width ** 2 #upper bound
        for i in range(self.res):
            for j in range(self.res):
                for k in range(self.res):
-                   dV = self.range_radius[i]*self.dz*self.dr*self.dtheta
+                   dV = (self.range_radius[i]+self.dr/2)*self.dz*self.dr*self.dtheta
                    in_other_tube =self.tube2.StepFunction(np.array([self.integration_space[0][i][j][k],
                                                                     self.integration_space[1][i][j][k],
                                                                     self.integration_space[2][i][j][k]]))
                    self.volume_intersect += dV*in_other_tube
-
-       self.v_check = 0.25*np.pi*2*self.delta_on_axis*self.tube1.width**2
        if (self.v_check < self.volume_intersect):
            raise Exception('grammatrix integration not working correctly')
-            
-    def VolumeIntersectAnalytical(self, m , n):
-    #tubes is a list of tubes, m and n are the indices for the gram matrix
-    #Maybe add a fourth option in the future for lines that do not intersect, but the corresponding tubes do intersect
-        if (intersections.intersectionMatrix[m][n] == 1):
-            vector1 = self.tube1.line.unit_vector
-            vector2 = self.tube2.line.unit_vector
-            
-            cross_product = np.cross(vector1,vector2)
-            norm_cross = np.linalg.norm(cross_product) #= sin(theta)
-            
-            volumeIntersect = self.tubes1.width**3/norm_cross
-            return(volumeIntersect)
-        else:
-                volumeIntersect = 0
-        return(volumeIntersect)
+
     
     def CalculateIntersectionAngle(self):
         theta = np.arcsin(np.linalg.norm(np.cross(self.tube1.line.unit_vector, self.tube2.line.unit_vector)))     
@@ -129,7 +124,12 @@ class Tube_intersection:
                                           round((line2.A[2] + line2.unit_vector[2]*locVector[1]),rounding)])
                 
         closest_point = (intersectionLocation1+intersectionLocation2)/2
-        
+
+        if (np.linalg.norm(intersectionLocation1 - intersectionLocation2) < self.tube1.width*2) and self.grid_size.PointInGrid(intersectionLocation1):
+            self.can_intersect = True
+        else:
+            self.can_intersect = False
+
         return(intersectionLocation1, closest_point)
     
     def integrate_tube(self):

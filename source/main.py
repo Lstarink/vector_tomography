@@ -19,14 +19,15 @@ def main():
 
     setup = make_setup.Make_Setup('../Setups/' + settings.FileName)
 
-    
-    """measurementgenerator.Generate_V_average makes"""
-    if settings.generate_your_own_measurement:        
-        sampled_field, vector_field = measurementgenerator.Generate_V_average(setup)
-    else:
-        sampled_field = np.load('somefile.npy')
-        vector_field = ('somefile.npy')
-        
-    final_field = measurement_specific.make_measurement_calculation(setup, sampled_field, vector_field)
+    if not settings.only_calculate_setup:
+        """measurementgenerator.Generate_V_average makes"""
+        if settings.generate_your_own_measurement:
+            sampled_field, vector_field = measurementgenerator.Generate_V_average(setup)
+        else:
+            sampled_field = np.load('somefile.npy')
+            vector_field = ('somefile.npy')
+
+        final_field = measurement_specific.make_measurement_calculation(setup, sampled_field, vector_field)
+        return final_field
 
 main()
