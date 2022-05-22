@@ -42,40 +42,56 @@ class Measurement_setup:
         return(lines)
            
     def plot_setup(self):
-        fig = plt.figure(figsize=(10,10))
-
+        fig = plt.figure(figsize=(10, 10))
         ax = fig.add_subplot(111, projection='3d')
+        plt.title('setup')
+        ax.set_xlabel('x as [m]')
+        ax.set_ylabel('y as [m]')
+        ax.set_zlabel('z as [m]')
+
         for i in range(len(self.lines)):
-            ax.plot([self.lines[i].A[0],self.lines[i].B[0]],
-                     [self.lines[i].A[1],self.lines[i].B[1]], 
-                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')  
+            ax.plot([self.lines[i].A[0], self.lines[i].B[0]],
+                     [self.lines[i].A[1], self.lines[i].B[1]],
+                     [self.lines[i].A[2], self.lines[i].B[2]], color='b')
         plt.show()
         return()
     
     def plot_setup_2dxy(self):
         #xy
-        plt.figure(figsize = (10, 10))
+        plt.figure(figsize=(10, 10))
+        plt.title('Setup x-y vlak')
+        plt.xlabel('x as [m]')
+        plt.ylabel('y as [m]')
+
         for i in range(len(self.lines)):
-            plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
-                     [self.lines[i].A[1],self.lines[i].B[1]], color = 'b')
+            plt.plot([self.lines[i].A[0], self.lines[i].B[0]],
+                     [self.lines[i].A[1], self.lines[i].B[1]], color='b')
         plt.show()
         return()
     
     def plot_setup_2dxz(self):
         #xy
-        plt.figure(figsize = (10, 10))
+        plt.figure(figsize=(10, 10))
+        plt.title('Setup x-z vlak')
+        plt.xlabel('x as [m]')
+        plt.ylabel('z as [m]')
+
         for i in range(len(self.lines)):
-            plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
-                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
+            plt.plot([self.lines[i].A[0], self.lines[i].B[0]],
+                     [self.lines[i].A[2], self.lines[i].B[2]], color='b')
         plt.show()
         return()
     
     def plot_setup_2dyz(self):
         #xy
-        plt.figure(figsize = (10, 10))
+        plt.figure(figsize=(10, 10))
+        plt.title('Setup y-z vlak')
+        plt.xlabel('y as [m]')
+        plt.ylabel('z as [m]')
+
         for i in range(len(self.lines)):
-            plt.plot([self.lines[i].A[1],self.lines[i].B[1]],
-                     [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
+            plt.plot([self.lines[i].A[1], self.lines[i].B[1]],
+                     [self.lines[i].A[2], self.lines[i].B[2]], color='b')
         plt.show()
         return()
         
@@ -138,23 +154,59 @@ class Measurement_setup:
         print('amount of intersections =', len(self.intersections.xArray))
         
     def MakeTubes(self, width):
-       self.tubes = []
-       for i in range(self.line_count):
+        self.tubes = []
+        for i in range(self.line_count):
            self.tubes.append(tb.tube(self.lines[i],width, self.grid))
-           
-       if (settings.plot_tube_setup):
+
+        if settings.plot_tube_setup:
             fig = plt.figure(figsize=(15,15))
             ax = fig.add_subplot(111, projection='3d')
+            plt.title('setup')
+            ax.set_xlabel('x as [m]')
+            ax.set_ylabel('y as [m]')
+            ax.set_zlabel('z as [m]')
             plt.xlim(self.grid.size[0], self.grid.size[3])
             plt.ylim(self.grid.size[1], self.grid.size[4])
             ax.set_zlim(self.grid.size[2], self.grid.size[5])
 
             for k in range(self.line_count):
                 xc1, yc1, zc1 = self.tubes[k].Parametric_tube()
-                ax.plot_surface(xc1, yc1, zc1, alpha = 0.5, color = 'b')        
+                ax.plot_surface(xc1, yc1, zc1, alpha=0.5, color='b')
 
             plt.show()
-                                     
+
+        if settings.plot_tube_setup_2d:
+
+            plt.figure(figsize=(15,15))
+            plt.title('Setup x-y vlak')
+            plt.xlabel('x as [m]')
+            plt.ylabel('y as [m]')
+            for k in range(self.line_count):
+                xc1, yc1, zc1 = self.tubes[k].Parametric_tube()
+                plt.plot(xc1, yc1, color='b')
+            plt.show()
+
+            plt.figure(figsize=(15,15))
+            plt.title('Setup x-z vlak')
+            plt.xlabel('x as [m]')
+            plt.ylabel('z as [m]')
+            for k in range(self.line_count):
+                xc1, yc1, zc1 = self.tubes[k].Parametric_tube()
+                plt.plot(xc1, zc1, color='b')
+            plt.show()
+
+            plt.figure(figsize=(15,15))
+            plt.title('Setup y-z vlak')
+            plt.xlabel('y as [m]')
+            plt.ylabel('z as [m]')
+            for k in range(self.line_count):
+                xc1, yc1, zc1 = self.tubes[k].Parametric_tube()
+                plt.plot(yc1, zc1, color='b')
+            plt.show()
+
+
+
+
     def MakeGramMatrix(self):
         self.gram_matrix = gm.GramMatrix(self.tubes, self.grid, self.intersections.intersectionMatrix)
         
@@ -162,9 +214,9 @@ class Measurement_setup:
         file_save_dir = '..\Output\calculations_' + settings.Name_of_calculation   
         try:
             os.mkdir(file_save_dir)
-            print("Directory " , file_save_dir ,  " Created ") 
+            print("Directory ", file_save_dir,  " Created ")
         except FileExistsError:
-            print("Directory " , file_save_dir ,  " already exists")                     
+            print("Directory ", file_save_dir,  " already exists")
 
 
         
@@ -216,8 +268,3 @@ if __name__ == "__main__":
     setup.MakeTubes(width= 0.03)
     print('making GramMatrix')
     setup.MakeGramMatrix()
-    
-    
-    
-
-    

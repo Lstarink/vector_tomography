@@ -99,6 +99,11 @@ class setupIntersections:
         fig = plt.figure(figsize=(10,10))
 
         ax = fig.add_subplot(111, projection='3d')
+        plt.title('setup')
+        ax.set_xlabel('x as [m]')
+        ax.set_ylabel('y as [m]')
+        ax.set_zlabel('z as [m]')
+        plt.grid()
         for i in range(len(self.lines)):
             ax.plot([self.lines[i].A[0],self.lines[i].B[0]],
                      [self.lines[i].A[1],self.lines[i].B[1]], 
@@ -110,6 +115,10 @@ class setupIntersections:
     def plot_intersections_2dxy(self):
         #xy
         plt.figure(figsize = (10, 10))
+        plt.title('Setup x-y vlak')
+        plt.xlabel('x as [m]')
+        plt.ylabel('y as [m]')
+        plt.grid()
         for i in range(len(self.lines)):
             plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
                      [self.lines[i].A[1],self.lines[i].B[1]], color = 'b')
@@ -121,6 +130,10 @@ class setupIntersections:
     def plot_intersections_2dxz(self):
         #xy
         plt.figure(figsize = (10, 10))
+        plt.title('Setup x-z vlak')
+        plt.xlabel('x as [m]')
+        plt.ylabel('z as [m]')
+        plt.grid()
         for i in range(len(self.lines)):
             plt.plot([self.lines[i].A[0],self.lines[i].B[0]],
                      [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
@@ -132,6 +145,10 @@ class setupIntersections:
     def plot_intersections_2dyz(self):
         #xy
         plt.figure(figsize = (10, 10))
+        plt.title('Setup y-z vlak')
+        plt.xlabel('y as [m]')
+        plt.ylabel('z as [m]')
+        plt.grid()
         for i in range(len(self.lines)):
             plt.plot([self.lines[i].A[1],self.lines[i].B[1]],
                      [self.lines[i].A[2],self.lines[i].B[2]], color = 'b')
