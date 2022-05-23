@@ -7,15 +7,16 @@ Created on Thu May  5 11:57:58 2022
 import numpy as np
 import matplotlib.pyplot as plt
 import settings
+import intersection
 
 class setupIntersections:
-    def __init__(self, lines, grid):
+    def __init__(self, lines, grid, tubes):
         self.grid = grid
         self.lines = lines
+        self.tubes = tubes
         self.xArray = []
         self.yArray = []
         self.zArray = []
-        self.intersection_list = []
         self.coordinate_list = []
         self.size = 0
         self.intersectionMatrix = np.zeros([len(lines), len(lines)])
@@ -86,7 +87,56 @@ class setupIntersections:
         for i in range(len(self.lines)):
             for j in range(len(self.lines)):
                 setupIntersections.CalcIntersect(self, self.lines[i], self.lines[j], i, j)
-    
+
+    def calculate_full_rank(self):
+        intersection_instances = []
+        for i in range(self.size):
+            intersection_ = intersection.Intersection(np.array([self.xArray[i], self.yArray[i], self.zArray[i]]))
+            for j in range(len(self.tubes)):
+                if (self.tubes[j].StepFunction(intersection_.location)):
+                    intersection_.add_tube()
+                    intersection_.add_vector(self.tubes[j].line.unit_vector)
+            intersection_instances.append(intersection_)
+        self.intersection_instances = intersection_instances
+
+    def count_rank(self):
+        rank_list = []
+        tube_present_list = []
+
+        for i in range(self.size):
+            self.intersection_instances[i].determine_rank()
+            rank_list.append(self.intersection_instances[i].rank)
+            tube_present_list.append(self.intersection_instances[i].tubes_present)
+
+        print(rank_list.count(2), 'intersections of rank 2')
+        print(rank_list.count(3), 'intersections of full rank')
+        print(tube_present_list.count(2), 'intersections with 2 tubes present')
+        print(tube_present_list.count(3), 'intersections with 3 tubes present')
+        print(tube_present_list.count(4), 'intersections with 4 tubes present')
+        print(tube_present_list.count(5), 'intersections with 5 tubes present')
+        more_tubes_present = self.size - tube_present_list.count(2) - tube_present_list.count(3) - tube_present_list.count(4) - tube_present_list.count(5)
+        print(more_tubes_present, 'intersections with more than 5 tubes present')
+
+        if settings.use_only_full_rank_intersections:
+            full_rank_indices = [i for i, x in enumerate(rank_list) if x == 3]
+
+            full_rank_intersections = np.zeros([3, len(full_rank_indices)])
+            full_rank_x = np.zeros([len(full_rank_indices)])
+            full_rank_y = np.zeros([len(full_rank_indices)])
+            full_rank_z = np.zeros([len(full_rank_indices)])
+
+            index = 0
+            for i in full_rank_indices:
+                for j in range(3):
+                    full_rank_x[index] = self.xArray[i]
+                    full_rank_y[index] = self.yArray[i]
+                    full_rank_z[index] = self.zArray[i]
+                index += 1
+
+            self.xArray = full_rank_x
+            self.yArray = full_rank_y
+            self.zArray = full_rank_z
+
     def SaveIntersections(self):
         
         #np.save('intersections.npy', np.array([self.xArray, self.yArray, self.zArray]))
