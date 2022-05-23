@@ -232,11 +232,12 @@ def Make_Setup(filename):
         setup.plot_setup_2dyz()
     print('Grouping lines together...')
     setup.MakeLineGroups()
+    print(setup.number_of_linegroups, 'groups of parallel lines found')
     print('making tubes')
     setup.MakeTubes(settings.tube_width)
-    print('Making directory for output files')
+    print('Making directory for output files...')
     setup.MakeDirectory()
-    print('calculating intersections')
+    print('calculating intersections...')
     setup.SetIntersections()
     if settings.plot_line_intersections:
         setup.intersections.plotIntersections()
@@ -244,9 +245,7 @@ def Make_Setup(filename):
         setup.intersections.plot_intersections_2dxz()
         setup.intersections.plot_intersections_2dyz()
     if settings.recalculate_gram_matrix:
-        print(setup.number_of_linegroups, 'groups of parallel lines found')
-
-        print('making GramMatrix')
+        print('making GramMatrix...')
         setup.MakeGramMatrix()
         #np.save('..\Output\calculations_'+settings.Name_of_calculation +'\setup.npy', setup)
     return(setup)

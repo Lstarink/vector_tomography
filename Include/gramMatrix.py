@@ -7,6 +7,8 @@ Created on Thu May  5 13:03:25 2022
 import numpy as np
 import matplotlib.pyplot as plt
 import tube_intersection as tbi
+import multiprocessing
+import time
 import sys
 
 #sys.path.append('C:/Users/lstar/Documents/TUDelft/Jaar3/BEP/Python/3D/Mark2/Settings')
@@ -20,41 +22,74 @@ class GramMatrix:
         self.size = len(tubes)
         self.gram_matrix = np.zeros([self.size, self.size])
         self.resolution = settings.matrix_integration_setting
-        GramMatrix.MakeGramMatrix(self)
-        
-    def MakeGramMatrix(self):
-        #dot_unit_vector_matrix = np.zeros([self.size, self.size])
+        if settings.use_integration_for_gram_matrix:
+            self.first_element = True
+            GramMatrix.MakeGramMatrix_integrated(self)
+            time.sleep(10)
+            print(self.gram_matrix)
+        else:
+            GramMatrix.MakeGramMatrix_analytical(self)
+
+    def MakeGramMatrix_integrated(self):
+        index_list = GramMatrix.enumerate_matrix(self)
+        gram_matrix_list = GramMatrix.make_instance_list(self)
+        with multiprocessing.Pool() as pool:
+            pool.starmap(GramMatrix.calculate_index, index_list)
+
+        try:
+            np.save('..\Output\calculations_'+settings.Name_of_calculation +'\gramMatrix.npy', self.gram_matrix)
+        except FileExistsError:
+            print("Gram Matrix already exists in this directory")
+
+    def make_instance_list(self):
+        gram_matrix_list = []
+        for i in range(self.size):
+            gram_matrix_list.append(self)
+        return(gram_matrix_list)
+
+    def enumerate_matrix(self):
+        index_list = []
+        for i in range(self.size):
+            for j in range(self.size):
+                index_list.append([self, i,j])
+        return(index_list)
+
+    def calculate_index(self, m ,n):
+        if (m != n):
+            if (abs(np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)) < 0.99999):
+
+                tube_intersection = tbi.Tube_intersection(self.tubes[m], self.tubes[n], self.resolution,
+                                                          self.intersection_matrix[m][n], self.grid_size)
+                volume_intersect = tube_intersection.volume_intersect
+                volume_check = tube_intersection.v_check
+                if settings.plot_tube_intersections and (
+                        volume_intersect != volume_check):  # only plot nontrivial cases
+                    GramMatrix.PlotTwoTubes(self, self.tubes[m], self.tubes[n], volume_intersect, volume_check)
+            else:
+                volume_intersect = 0  # This only holds if tubewidth smaller than distance between parallel lines
+        else:
+            volume_intersect = self.tubes[m].volume
+
+        dotUnitVectors = np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)
+        denominator = self.tubes[m].area * self.tubes[n].area * self.tubes[m].line.length * self.tubes[n].line.length
+
+        self.gram_matrix[m][n] = volume_intersect * dotUnitVectors / denominator
+        #print(volume_intersect * dotUnitVectors / denominator)
+
+    def MakeGramMatrix_analytical(self):
         for m in range(self.size):
-            if settings.use_integration_for_gram_matrix:
-                print('Gram Matrix: ', (m / self.size)*100, '%')
             for n in range(self.size):
                 if (m != n):
                     if (abs(np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)) < 0.99999):
-                        if settings.use_integration_for_gram_matrix:
-                            tube_intersection = tbi.Tube_intersection(self.tubes[m], self.tubes[n], self.resolution, self.intersection_matrix[m][n], self.grid_size)
-                            volume_intersect = tube_intersection.volume_intersect
-                            volume_check = tube_intersection.v_check
-                        else:
-                            #print('used analytical gram matrix calculation')
-                            volume_intersect = GramMatrix.TubesVolumeIntersectAnalytical(self.tubes, m, n, self.intersection_matrix)
-                            #print(self.intersection_matrix)
-                        if settings.plot_tube_intersections and (volume_intersect != volume_check): #only plot nontrivial cases
-                            GramMatrix.PlotTwoTubes(self, self.tubes[m], self.tubes[n], volume_intersect, volume_check)
+                        volume_intersect = GramMatrix.TubesVolumeIntersectAnalytical(self.tubes, m, n, self.intersection_matrix)
                     else:
                         volume_intersect = 0 #This only holds if tubewidth smaller than distance between parallel lines
                 else:
                     volume_intersect = self.tubes[m].volume
-
                 dotUnitVectors = np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)
-                #dot_unit_vector_matrix[m][n] = dotUnitVectors
                 denominator = self.tubes[m].area*self.tubes[n].area*self.tubes[m].line.length*self.tubes[n].line.length
-                
-                self.gram_matrix[m][n] = volume_intersect*dotUnitVectors/denominator        
-        
-        #print(dot_unit_vector_matrix)        
-        #self.gram_matrix[n][m] = volume_intersect*dotUnitVectors/denominator
-        try:    
-            #np.save('gramMatrix.npy', self.gram_matrix)
+                self.gram_matrix[m][n] = volume_intersect*dotUnitVectors/denominator
+        try:
             np.save('..\Output\calculations_'+settings.Name_of_calculation +'\gramMatrix.npy', self.gram_matrix) 
         except FileExistsError:
             print("Gram Matrix already exists in this directory")  
