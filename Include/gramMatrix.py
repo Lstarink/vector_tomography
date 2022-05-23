@@ -25,8 +25,6 @@ class GramMatrix:
         if settings.use_integration_for_gram_matrix:
             self.first_element = True
             GramMatrix.MakeGramMatrix_integrated(self)
-            time.sleep(10)
-            print(self.gram_matrix)
         else:
             GramMatrix.MakeGramMatrix_analytical(self)
 
@@ -36,10 +34,8 @@ class GramMatrix:
         with multiprocessing.Pool() as pool:
             value_list.append(pool.starmap(GramMatrix.calculate_index, index_list))
 
-        print(value_list)
         for i, j, value in value_list[0]:
             self.gram_matrix[i][j] = value
-
         try:
             np.save('..\Output\calculations_'+settings.Name_of_calculation +'\gramMatrix.npy', self.gram_matrix)
         except FileExistsError:
@@ -66,6 +62,10 @@ class GramMatrix:
                                                           self.intersection_matrix[m][n], self.grid_size)
                 volume_intersect = tube_intersection.volume_intersect
                 volume_check = tube_intersection.v_check
+                if volume_intersect > volume_check:
+                    print('volume_intersect cant be bigger than volume_check! Something somewhere went wrong')
+                    raise ValueError
+
             else:
                 volume_intersect = 0  # This only holds if tubewidth smaller than distance between parallel lines
         else:
