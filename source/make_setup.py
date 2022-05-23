@@ -148,10 +148,13 @@ class Measurement_setup:
             raise Exception('Line groups constructed unsuccesfully')
         
     def SetIntersections(self):
-        self.intersections = ins.setupIntersections(self.lines, self.grid)
+        self.intersections = ins.setupIntersections(self.lines, self.grid, self.tubes)
         self.intersections.SetPoints()
-        self.intersections.SaveIntersections()
         print('amount of intersections =', len(self.intersections.xArray))
+        self.intersections.calculate_full_rank()
+        self.intersections.count_rank()
+        self.intersections.SaveIntersections()
+        print('amount of used intersections =', len(self.intersections.xArray))
         
     def MakeTubes(self, width):
         self.tubes = []
