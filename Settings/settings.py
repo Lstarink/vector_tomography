@@ -8,7 +8,7 @@ Created on Tue May 10 19:42:47 2022
 """All settings go in this file"""
 
 """settings for what part of code needs to be rerun"""
-only_calculate_setup = False
+only_calculate_setup = True
 recalculate_gram_matrix = True
 generate_your_own_measurement = True
 
