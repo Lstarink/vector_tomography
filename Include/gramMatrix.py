@@ -31,11 +31,16 @@ class GramMatrix:
     def MakeGramMatrix_integrated(self):
         index_list = GramMatrix.enumerate_matrix(self)
         value_list = []
+        time_start = time.time()
         with multiprocessing.Pool() as pool:
             value_list.append(pool.starmap(GramMatrix.calculate_index, index_list))
 
         for i, j, value in value_list[0]:
             self.gram_matrix[i][j] = value
+            self.gram_matrix[j][i] = value
+        time_end = time.time()
+
+        print('calculated gram matrix in ', time_end-time_start, 'seconds')
         try:
             np.save('..\Output\calculations_'+settings.Name_of_calculation +'\gramMatrix.npy', self.gram_matrix)
         except FileExistsError:
@@ -50,8 +55,8 @@ class GramMatrix:
     def enumerate_matrix(self):
         index_list = []
         for i in range(self.size):
-            for j in range(self.size):
-                index_list.append([self, i,j])
+            for j in range(i, self.size):
+                index_list.append([self, i, j])
         return index_list
 
     def calculate_index(self, m ,n):
@@ -74,7 +79,6 @@ class GramMatrix:
         dotUnitVectors = np.dot(self.tubes[m].line.unit_vector, self.tubes[n].line.unit_vector)
         denominator = self.tubes[m].area * self.tubes[n].area * self.tubes[m].line.length * self.tubes[n].line.length
 
-        #self.gram_matrix[m][n] = volume_intersect * dotUnitVectors / denominator
         return [m, n, volume_intersect * dotUnitVectors / denominator]
 
     def MakeGramMatrix_analytical(self):
@@ -96,8 +100,6 @@ class GramMatrix:
             print("Gram Matrix already exists in this directory")  
 
     def TubesVolumeIntersectAnalytical(tubes, m, n, intersectionMatrix):
-        #tubes is a list of tubes, m and n are the indices for the gram matrix
-        #Maybe add a fourth option in the future for lines that do not intersect, but the corresponding tubes do intersect
         if (m == n):
             volumeIntersect = tubes[m].volume
             return(volumeIntersect)

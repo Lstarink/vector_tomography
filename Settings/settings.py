@@ -8,7 +8,7 @@ Created on Tue May 10 19:42:47 2022
 """All settings go in this file"""
 
 """settings for what part of code needs to be rerun"""
-only_calculate_setup = False
+only_calculate_setup = True
 recalculate_gram_matrix = True
 generate_your_own_measurement = True
 
@@ -16,8 +16,8 @@ generate_your_own_measurement = True
  Define what measurements you want to use
  Define where you want to save intersections and Gram Matrix if recalculating the setup"""
  
-FileName = '3D_setup2.csv'
-Name_of_calculation = 'setup1'
+FileName = 'final_setup.csv'
+Name_of_calculation = 'final_setup'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 measurement_file = generated_measurement_file
 
@@ -30,8 +30,8 @@ use_sensor_error = False
 sensor_stddev = 0.00166 #meters
 
 """Settings for Gram Matrix"""
-use_integration_for_gram_matrix = False
-matrix_integration_setting = 75 #If used needs alot of calculation time, and value has to be set to at least 100
+use_integration_for_gram_matrix = True
+matrix_integration_setting = 20 #If used needs alot of calculation time, and value has to be set to at least 100
 tube_width = 0.02
 
 """Settings for reconstruction of the field"""
