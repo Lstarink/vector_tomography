@@ -211,7 +211,7 @@ class Error:
     def ShowQuiver(self, x, y, u, v, height, axis):
         X, Y = np.meshgrid(x, y)
         plt.figure(figsize=(15, 15))
-        plt.quiver(X, Y, v, u)
+        plt.quiver(X, Y, u, v)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         plt.show()
@@ -219,7 +219,7 @@ class Error:
     def ShowQuiver_original(self, x, y, u, v, height, axis):
         X, Y = np.meshgrid(x, y)
         plt.figure(figsize=(15, 15))
-        plt.quiver(X, Y, v, u)
+        plt.quiver(X, Y, u, v)
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         plt.show()
