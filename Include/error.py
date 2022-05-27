@@ -223,7 +223,7 @@ class Error:
         fig1.colorbar(img1)
         plt.title('Relative error at ' + axis + ' =' + str(height))
         if settings.save_figures:
-            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Error_at ' + axis + '= ' + str(height)+'.jpeg', format='jpeg')
+            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Error_at ' + axis + '= ' + (str(height).replace('.', ',')) +'.jpeg', format='jpeg')
         plt.show()
 
     def ShowQuiver(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
@@ -238,7 +238,7 @@ class Error:
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
-            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Reconstructed_Field_at ' + axis + '= ' + str(height)+'.jpeg', format='jpeg')
+            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Reconstructed_Field_at ' + axis + '= ' + (str(height).replace('.', ','))+'.jpeg', format='jpeg')
         plt.show()
 
     def ShowQuiver_original(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
@@ -253,5 +253,5 @@ class Error:
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
-            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Original_Field_at ' + axis + '= ' + str(height) +'.jpeg', format='jpeg')
+            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Original_Field_at ' + axis + '= ' + (str(height).replace('.', ',')) +'.jpeg', format='jpeg')
         plt.show()
