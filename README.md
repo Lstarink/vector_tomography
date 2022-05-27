@@ -6,32 +6,45 @@ Als jullie dit bestand gelezen hebben begrijpen jullie hopelijk genoeg van het m
 Eerst een paar stappen om alles te downloaden:
 
 1: Allereerst heb je anaconda navigator nodig. Erol heeft dit waarschijnlijk al, en Willem je kunt het downloaden in brightspace via de software portal.
+
 2: Daarnaast heb je PyCharm community nodig. Dit kun je downloaden op deze site: https://www.jetbrains.com/pycharm/download/other.html.
+
 3: Open Anaconda navigator en kijk of je in het overzicht nu PyCharm community kunt vinden, anders moet je misschien even opnieuw opstarten. Letop! PyCharm proffesional
    staat er waarschijnlijk ook tussen, die moet je niet hebben.
+   
 4: Open PyCharm community via Anaconda navigator
+
 5: Als het goed is zie je nu een menu met "Welcome to PyCharm". Kies "Get from VCS".
+
 6: Je ziet nu twee velden waar je iets in kunt vullen, plak deze link: https://github.com/Lstarink/vector_tomography.git bij URL.
+
 7: Onder die twee velden zie je een melding staan dat je git niet hebt geinstalleerd, klik op install git.
+
 8: Klik nu rechtsonder op Clone, en daarna Trust Project.
+
 9: Als het goed is kun je nu bij al mijn code. Open het mapje vector_tomography aan de linker kant bij project. Open het mapje source, en open main.py.
-10: Klik helemaal rechts onder op <No interpreter>. Daarna op add interpreter. 
+
+10: Klik helemaal rechts onder op <No interpreter>. Daarna op add interpreter.    
     Als het goed is opent nu een nieuw window en staat er bij Base interpreter het path waar je python hebt geinstalleerd
     Selecteer New enviroment.
     Klik op OK.
+   
 11: Klik rechts bovenin op Add Configuration..., klik op Add new run configuration, selecteer python. 
     Ze bij Name: "main".
     Bij Script path moet je rechts op het mapjeklikken, ga naar >source, klik op main.py en klik op OK. 
     Bij interpreter verifieer dat er Project Default (...) staat, selecteer anders een python interpeter.
     Klik op OK.
+   
 12: Ga links onder naar Python Packages. Zoek en installeer de volgende packages
     Numpy
     Sympy
     Matplotlib
+   
 13: Ga onderin naar Terminal en type:
     git checkout erol
     of:
     git checkout willem
+   
 13: Nu kun je rechts boven op het groene driehoekje klikken om het model te runnen
   
 
