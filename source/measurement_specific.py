@@ -185,7 +185,7 @@ class Measurement:
         ax.quiver(X, Y, Z, u, v, w)
         plt.show()
 
-    def plot_error_slices(self, vector_field):
+    def plot_field_slices(self, vector_field=None):
         x = np.linspace(self.setup.grid.x_min, self.setup.grid.x_max, settings.plot_amount_of_interpolated_slices)
         y = np.linspace(self.setup.grid.y_min, self.setup.grid.y_max, settings.plot_amount_of_interpolated_slices)
         z = np.linspace(self.setup.grid.z_min, self.setup.grid.z_max, settings.plot_amount_of_interpolated_slices)
@@ -206,7 +206,7 @@ class Measurement:
         error_.Intersection_error()
         error_.Global_Error()
 
-def  make_measurement_calculation(setup, generated_field, vector_field):
+def  make_measurement_calculation(setup, generated_field=None, vector_field=None):
     print('loading files...')
     measurement = Measurement(setup)
     print('adding measurements to lines...')
@@ -237,9 +237,9 @@ def  make_measurement_calculation(setup, generated_field, vector_field):
     print('calculating error...')
     if settings.plot_error:
         measurement.PlotError(generated_field)
-    if settings.plot_error_sliced:
-        measurement.plot_error_slices(vector_field)
-    measurement.calculate_global_error(vector_field)
+        measurement.calculate_global_error(vector_field)
+    if settings.plot_field_sliced:
+        measurement.plot_field_slices(vector_field)
     return(measurement.final_field)
 
        

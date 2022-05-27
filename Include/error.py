@@ -12,7 +12,10 @@ class Error:
         self.intersections = intersections
 
     def sample_fields(self, point):
-        original_vector = self.original_field.Sample(point[0], point[1], point[2])
+        if settings.generate_your_own_measurement:
+            original_vector = self.original_field.Sample(point[0], point[1], point[2])
+        else:
+            original_vector = None
         reconstructed_vector = self.reconstructed_field.SampleField(point)
         return(reconstructed_vector, original_vector)
 
@@ -78,18 +81,19 @@ class Error:
 
         res = settings.plot_interpolated_resolution
 
-        y = np.linspace(self.grid.y_min, self.grid.y_max, res)
-        z = np.linspace(self.grid.z_min, self.grid.z_max, res)
+        y = np.linspace(self.grid.y_min + settings.interpolation_offset, self.grid.y_max - settings.interpolation_offset, res)
+        z = np.linspace(self.grid.z_min + settings.interpolation_offset, self.grid.z_max - settings.interpolation_offset, res)
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
         w = np.zeros([res, res])
 
-        u_orig = np.zeros([res, res])
-        v_orig = np.zeros([res, res])
-        w_orig = np.zeros([res, res])
+        if settings.plot_error_sliced:
+            u_orig = np.zeros([res, res])
+            v_orig = np.zeros([res, res])
+            w_orig = np.zeros([res, res])
 
-        error = np.zeros([res, res])
+            error = np.zeros([res, res])
 
         for i in range(res):
             for j in range(res):
@@ -98,40 +102,44 @@ class Error:
                 v[i][j] = vector[1]
                 w[i][j] = vector[2]
 
-                u_orig[i][j] = vector_original[0]
-                v_orig[i][j] = vector_original[1]
-                w_orig[i][j] = vector_original[2]
+                if settings.plot_error_sliced:
 
-                norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                # TODO find something prettier for this
-                if norm_v_original == 0:
-                    norm_v_original += 0.01
+                    u_orig[i][j] = vector_original[0]
+                    v_orig[i][j] = vector_original[1]
+                    w_orig[i][j] = vector_original[2]
 
-                if (norm_v_original != 0):
-                    error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
-                                                            (v[i][j] - v_orig[i][j]),
-                                                            (w[i][j] - w_orig[i][j])])))/(norm_v_original)
+                    norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
+                    # TODO find something prettier for this
+                    if norm_v_original == 0:
+                        norm_v_original += 0.01
 
-        Error.ShowError(self, y, z, error, x, 'x')
-        Error.ShowQuiver(self, y, z, v, w, x, 'x')
-        Error.ShowQuiver_original(self, y, z, v_orig, w_orig, x, 'x')
+                    if (norm_v_original != 0):
+                        error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
+                                                                (v[i][j] - v_orig[i][j]),
+                                                                (w[i][j] - w_orig[i][j])])))/(norm_v_original)
+        Error.ShowQuiver(self, y, z, v, w, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max])
+
+        if settings.plot_error_sliced:
+            Error.ShowError(self, y, z, error, x, 'x')
+            Error.ShowQuiver_original(self, y, z, v_orig, w_orig, x, 'x')
 
     def SliceY(self, y):
 
         res = settings.plot_interpolated_resolution
 
-        x = np.linspace(self.grid.x_min, self.grid.x_max, res)
-        z = np.linspace(self.grid.z_min, self.grid.z_max, res)
+        x = np.linspace(self.grid.x_min +settings.interpolation_offset, self.grid.x_max - settings.interpolation_offset, res)
+        z = np.linspace(self.grid.z_min +settings.interpolation_offset, self.grid.z_max - settings.interpolation_offset, res)
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
         w = np.zeros([res, res])
 
-        u_orig = np.zeros([res, res])
-        v_orig = np.zeros([res, res])
-        w_orig = np.zeros([res, res])
+        if settings.plot_error_sliced:
+            u_orig = np.zeros([res, res])
+            v_orig = np.zeros([res, res])
+            w_orig = np.zeros([res, res])
 
-        error = np.zeros([res, res])
+            error = np.zeros([res, res])
 
         for i in range(res):
             for j in range(res):
@@ -140,40 +148,44 @@ class Error:
                 v[i][j] = vector[1]
                 w[i][j] = vector[2]
 
-                u_orig[i][j] = vector_original[0]
-                v_orig[i][j] = vector_original[1]
-                w_orig[i][j] = vector_original[2]
+                if settings.plot_error_sliced:
 
-                norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                # TODO find something prettier for this
-                if norm_v_original == 0:
-                    norm_v_original += 0.01
+                    u_orig[i][j] = vector_original[0]
+                    v_orig[i][j] = vector_original[1]
+                    w_orig[i][j] = vector_original[2]
 
-                if (norm_v_original != 0):
-                    error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
-                                                            (v[i][j] - v_orig[i][j]),
+                    norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
+                    # TODO find something prettier for this
+                    if norm_v_original == 0:
+                        norm_v_original += 0.01
+
+                    if (norm_v_original != 0):
+                        error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
+                                                                (v[i][j] - v_orig[i][j]),
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
+        Error.ShowQuiver(self, x, z, u, w, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max])
 
-        Error.ShowError(self, x, z, error, y, 'y')
-        Error.ShowQuiver(self, x, z, u, w, y, 'y')
-        Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y')
+        if settings.plot_error_sliced:
+            Error.ShowError(self, x, z, error, y, 'y')
+            Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y')
 
     def SliceZ(self, z):
 
         res = settings.plot_interpolated_resolution
 
-        x = np.linspace(self.grid.x_min, self.grid.x_max, res)
-        y = np.linspace(self.grid.y_min, self.grid.y_max, res)
+        x = np.linspace(self.grid.x_min + settings.interpolation_offset, self.grid.x_max - settings.interpolation_offset, res)
+        y = np.linspace(self.grid.y_min + settings.interpolation_offset, self.grid.y_max - settings.interpolation_offset, res)
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
         w = np.zeros([res, res])
 
-        u_orig = np.zeros([res, res])
-        v_orig = np.zeros([res, res])
-        w_orig = np.zeros([res, res])
+        if settings.plot_error_sliced:
+            u_orig = np.zeros([res, res])
+            v_orig = np.zeros([res, res])
+            w_orig = np.zeros([res, res])
 
-        error = np.zeros([res, res])
+            error = np.zeros([res, res])
 
         for i in range(res):
             for j in range(res):
@@ -182,23 +194,25 @@ class Error:
                 v[i][j] = vector[1]
                 w[i][j] = vector[2]
 
-                u_orig[i][j] = vector_original[0]
-                v_orig[i][j] = vector_original[1]
-                w_orig[i][j] = vector_original[2]
+                if settings.plot_error_sliced:
+                    u_orig[i][j] = vector_original[0]
+                    v_orig[i][j] = vector_original[1]
+                    w_orig[i][j] = vector_original[2]
 
-                norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                # TODO find something prettier for this
-                if norm_v_original == 0:
-                    norm_v_original += 0.01
+                    norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
+                    # TODO find something prettier for this
+                    if norm_v_original == 0:
+                        norm_v_original += 0.01
 
-                if (norm_v_original != 0):
-                    error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
-                                                            (v[i][j] - v_orig[i][j]),
+                    if (norm_v_original != 0):
+                        error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
+                                                                (v[i][j] - v_orig[i][j]),
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
+        Error.ShowQuiver(self, x, y, u, v, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max])
 
-        Error.ShowError(self, x, y, error, z, 'z')
-        Error.ShowQuiver(self, x, y, u, v, z, 'z')
-        Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z')
+        if settings.plot_error_sliced:
+            Error.ShowError(self, x, y, error, z, 'z')
+            Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z')
 
 
     def ShowError(self, x, y, error, height, axis):
@@ -208,10 +222,12 @@ class Error:
         plt.title('Relative in plane error at ' + axis + ' =' + str(height))
         plt.show()
 
-    def ShowQuiver(self, x, y, u, v, height, axis):
+    def ShowQuiver(self, x, y, u, v, height, axis, axis1_lim, axis2_lim):
         X, Y = np.meshgrid(x, y)
         plt.figure(figsize=(15, 15))
-        plt.quiver(X, Y, u, v)
+        plt.xlim(axis1_lim)
+        plt.ylim(axis2_lim)
+        plt.quiver(X, Y, u, v, scale= settings.quiver_scale)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         plt.show()

@@ -23,10 +23,12 @@ if __name__ == '__main__':
         """measurementgenerator.Generate_V_average makes"""
         if settings.generate_your_own_measurement:
             sampled_field, vector_field = measurementgenerator.Generate_V_average(setup)
+            final_field = measurement_specific.make_measurement_calculation(setup, sampled_field, vector_field)
         else:
-            sampled_field = np.load('somefile.npy')
-            vector_field = ('somefile.npy')
+            final_field = measurement_specific.make_measurement_calculation(setup)
 
-        final_field = measurement_specific.make_measurement_calculation(setup, sampled_field, vector_field)
+
+
+
 
 

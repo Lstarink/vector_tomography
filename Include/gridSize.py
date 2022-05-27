@@ -9,8 +9,10 @@ import numpy as np
 import settings
 
 class gridSize:
-    def __init__(self, lines):
+    def __init__(self, lines, offset=None):
+        self.offset = offset
         gridSize.CalculateRange(self, lines)
+
         
     def CalculateRange(self, lines):
         x_min = 0
