@@ -237,13 +237,9 @@ def  make_measurement_calculation(setup, generated_field=None, vector_field=None
     print('calculating error...')
     if settings.plot_error:
         measurement.PlotError(generated_field)
-        measurement.calculate_global_error(vector_field)
     if settings.plot_field_sliced:
         measurement.plot_field_slices(vector_field)
+    if settings.calculate_error:
+        measurement.calculate_global_error(vector_field)
     return(measurement.final_field)
 
-       
-# =============================================================================
-# if __name__ == "__main__":
-#     make_measurement_calculation()
-# =============================================================================

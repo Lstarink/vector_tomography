@@ -42,9 +42,10 @@ class Error:
     def Global_Error(self):
         res = settings.plot_interpolated_resolution
 
-        x = np.linspace(self.grid.x_min, self.grid.x_max, res)
-        y = np.linspace(self.grid.y_min, self.grid.y_max, res)
-        z = np.linspace(self.grid.z_min, self.grid.z_max, res)
+        x = np.linspace(self.grid.x_min +settings.interpolation_offset_x, self.grid.x_max - settings.interpolation_offset_x, res)
+        y = np.linspace(self.grid.y_min + settings.interpolation_offset_y, self.grid.y_max - settings.interpolation_offset_y, res)
+        z = np.linspace(self.grid.z_min + settings.interpolation_offset_z, self.grid.z_max - settings.interpolation_offset_z, res)
+
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
@@ -81,8 +82,8 @@ class Error:
 
         res = settings.plot_interpolated_resolution
 
-        y = np.linspace(self.grid.y_min + settings.interpolation_offset, self.grid.y_max - settings.interpolation_offset, res)
-        z = np.linspace(self.grid.z_min + settings.interpolation_offset, self.grid.z_max - settings.interpolation_offset, res)
+        y = np.linspace(self.grid.y_min + settings.interpolation_offset_y, self.grid.y_max - settings.interpolation_offset_y, res)
+        z = np.linspace(self.grid.z_min + settings.interpolation_offset_z, self.grid.z_max - settings.interpolation_offset_z, res)
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
@@ -109,7 +110,6 @@ class Error:
                     w_orig[i][j] = vector_original[2]
 
                     norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                    # TODO find something prettier for this
                     if norm_v_original == 0:
                         norm_v_original += 0.01
 
@@ -117,18 +117,18 @@ class Error:
                         error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                                 (v[i][j] - v_orig[i][j]),
                                                                 (w[i][j] - w_orig[i][j])])))/(norm_v_original)
-        Error.ShowQuiver(self, y, z, v, w, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max])
+        Error.ShowQuiver(self, y, z, v, w, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
 
         if settings.plot_error_sliced:
-            Error.ShowError(self, y, z, error, x, 'x')
-            Error.ShowQuiver_original(self, y, z, v_orig, w_orig, x, 'x')
+            Error.ShowError(self, y, z, error, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
+            Error.ShowQuiver_original(self, y, z, v_orig, w_orig, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
 
     def SliceY(self, y):
 
         res = settings.plot_interpolated_resolution
 
-        x = np.linspace(self.grid.x_min +settings.interpolation_offset, self.grid.x_max - settings.interpolation_offset, res)
-        z = np.linspace(self.grid.z_min +settings.interpolation_offset, self.grid.z_max - settings.interpolation_offset, res)
+        x = np.linspace(self.grid.x_min +settings.interpolation_offset_x, self.grid.x_max - settings.interpolation_offset_x, res)
+        z = np.linspace(self.grid.z_min +settings.interpolation_offset_z, self.grid.z_max - settings.interpolation_offset_z, res)
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
@@ -155,7 +155,6 @@ class Error:
                     w_orig[i][j] = vector_original[2]
 
                     norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                    # TODO find something prettier for this
                     if norm_v_original == 0:
                         norm_v_original += 0.01
 
@@ -163,18 +162,18 @@ class Error:
                         error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                                 (v[i][j] - v_orig[i][j]),
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
-        Error.ShowQuiver(self, x, z, u, w, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max])
+        Error.ShowQuiver(self, x, z, u, w, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
 
         if settings.plot_error_sliced:
-            Error.ShowError(self, x, z, error, y, 'y')
-            Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y')
+            Error.ShowError(self, x, z, error, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
+            Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
 
     def SliceZ(self, z):
 
         res = settings.plot_interpolated_resolution
 
-        x = np.linspace(self.grid.x_min + settings.interpolation_offset, self.grid.x_max - settings.interpolation_offset, res)
-        y = np.linspace(self.grid.y_min + settings.interpolation_offset, self.grid.y_max - settings.interpolation_offset, res)
+        x = np.linspace(self.grid.x_min + settings.interpolation_offset_x, self.grid.x_max - settings.interpolation_offset_x, res)
+        y = np.linspace(self.grid.y_min + settings.interpolation_offset_y, self.grid.y_max - settings.interpolation_offset_y, res)
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
@@ -200,7 +199,6 @@ class Error:
                     w_orig[i][j] = vector_original[2]
 
                     norm_v_original = np.linalg.norm(np.array([u_orig[i][j], v_orig[i][j], w_orig[i][j]]))
-                    # TODO find something prettier for this
                     if norm_v_original == 0:
                         norm_v_original += 0.01
 
@@ -208,34 +206,52 @@ class Error:
                         error[i][j] = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
                                                                 (v[i][j] - v_orig[i][j]),
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
-        Error.ShowQuiver(self, x, y, u, v, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max])
+        Error.ShowQuiver(self, x, y, u, v, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
 
         if settings.plot_error_sliced:
-            Error.ShowError(self, x, y, error, z, 'z')
-            Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z')
+            Error.ShowError(self, x, y, error, z, 'z',  [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
+            Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
 
 
-    def ShowError(self, x, y, error, height, axis):
+    def ShowError(self, x, y, error, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         fig1 = plt.figure(figsize=(15, 15))
         img1 = plt.contourf(x, y, error, 100)
+        plt.xlim(axis1_lim)
+        plt.ylim(axis2_lim)
+        plt.xlabel(axis1_name + '-axis')
+        plt.ylabel(axis2_name + '-axis')
         fig1.colorbar(img1)
-        plt.title('Relative in plane error at ' + axis + ' =' + str(height))
+        plt.title('Relative error at ' + axis + ' =' + str(height))
+        if settings.save_figures:
+            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Error_at ' + axis + '= ' + str(height)+'.jpeg', format='jpeg')
         plt.show()
 
-    def ShowQuiver(self, x, y, u, v, height, axis, axis1_lim, axis2_lim):
+    def ShowQuiver(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
         plt.figure(figsize=(15, 15))
         plt.xlim(axis1_lim)
         plt.ylim(axis2_lim)
-        plt.quiver(X, Y, u, v, scale= settings.quiver_scale)
+        plt.style.use('fivethirtyeight')
+        plt.xlabel(axis1_name + '-axis')
+        plt.ylabel(axis2_name + '-axis')
+        plt.quiver(X, Y, v, u, scale= settings.quiver_scale)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
+        if settings.save_figures:
+            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Reconstructed_Field_at ' + axis + '= ' + str(height)+'.jpeg', format='jpeg')
         plt.show()
 
-    def ShowQuiver_original(self, x, y, u, v, height, axis):
+    def ShowQuiver_original(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
         plt.figure(figsize=(15, 15))
-        plt.quiver(X, Y, u, v)
+        plt.xlim(axis1_lim)
+        plt.ylim(axis2_lim)
+        plt.style.use('fivethirtyeight')
+        plt.xlabel(axis1_name + '-axis')
+        plt.ylabel(axis2_name + '-axis')
+        plt.quiver(X, Y, v, u)
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
+        if settings.save_figures:
+            plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Original_Field_at ' + axis + '= ' + str(height) +'.jpeg', format='jpeg')
         plt.show()

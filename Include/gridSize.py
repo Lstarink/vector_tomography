@@ -69,16 +69,18 @@ class gridSize:
         if (point[0] >= self.size[0]) and (point[0] <= self.size[3]):
                 if (point[1] >= self.size[1]) and (point[1] <= self.size[4]):
                     if (point[2] >= self.size[2]) and (point[2] <= self.size[5]):
-                        return(True)
+                        return True
                     
         else:
-            return(False)
+            return False
                             
     def intersection_in_grid(self, point):
-        boundary_edge = settings.intersection_boundary_edge
-        if (point[0] >= self.size[0] + boundary_edge) and (point[0] <= self.size[3] - boundary_edge):
-            if (point[1] >= self.size[1] + boundary_edge) and (point[1] <= self.size[4] - boundary_edge):
-                if (point[2] >= self.size[2] + boundary_edge) and (point[2] <= self.size[5] - boundary_edge):
+        boundary_edge_x = settings.intersection_boundary_edge_x
+        boundary_edge_y = settings.intersection_boundary_edge_y
+        boundary_edge_z = settings.intersection_boundary_edge_z
+        if (point[0] >= self.size[0] + boundary_edge_x) and (point[0] <= self.size[3] - boundary_edge_x):
+            if (point[1] >= self.size[1] + boundary_edge_y) and (point[1] <= self.size[4] - boundary_edge_y):
+                if (point[2] >= self.size[2] + boundary_edge_z) and (point[2] <= self.size[5] - boundary_edge_z):
                     return True
 
         else:

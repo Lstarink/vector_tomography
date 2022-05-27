@@ -301,24 +301,9 @@ class Measurement_setup:
     
 
 def instantiate_field1():
-    x = sp.symbols('x')
-    y = sp.symbols('y')
-    z = sp.symbols('z')
-    
-# =============================================================================
-# =============================================================================
-#     u = sp.Float(0.1)
-#     v = sp.Float(0.2)
-#     w = sp.Float(0.4)#x
-# =============================================================================
-    u = (sp.Float(0.0))*(y - 0.1)
-    v = -(sp.Float(0.0))
-    w = (sp.Float(0.01))
-# =============================================================================
-# =============================================================================
-#     u = x**2
-#     v = -2*x*y
-# =============================================================================
+    u = settings.u
+    v = settings.v
+    w = settings.w
     return(u,v,w)
 
 def plotIntersectionField(field, intersections, gridSize):
@@ -334,19 +319,13 @@ def plotIntersectionField(field, intersections, gridSize):
     ax.set_xlim([gridSize[0], gridSize[3]])
     ax.set_ylim([gridSize[1], gridSize[4]])
     ax.set_zlim([gridSize[2], gridSize[5]])
-    
-# =============================================================================
-#     ax.set_xlim([setup.grid.x_min, setup.grid.x_max])
-#     ax.set_ylim([setup.grid.y_min, setup.grid.y_max])
-#     ax.set_zlim([setup.grid.z_min, setup.grid.z_max])
-# =============================================================================
+
     plt.show()  
 
 def Generate_V_average(setup):
     #settings
     intersections = np.load('../Output/' + 'calculations_'+ settings.Name_of_calculation + '/Intersections.npy')
-    
-    #resolution = 7#set resolution
+
     
     #Make a vector field
     u, v, w = instantiate_field1()
@@ -354,16 +333,9 @@ def Generate_V_average(setup):
     
     #Load setup
     measurement_setup = Measurement_setup(settings.FileName)
-    #calculate gridSize 
     x_min, y_min, z_min, x_max, y_max, z_max = measurement_setup.CalculateRange()
     gridSize = np.array([x_min, y_min,z_min, x_max, y_max, z_max])
-    #Calculate and save it
-    #measurement_setup.SaveMeasurements(field1, 'output_3D_setup2.csv')
     measurement_setup.Save_speeds(field1)
-    #Show setup
-    #measurement_setup.plot_setup()
-    #field1.Plot(gridSize, resolution)
-    #field1.plot_sliced('z', gridSize, resolution)
     field_sampled_intersections = np.zeros([len(intersections[0]), 3])
     for i in range(len(intersections[0])):
         field_sampled_intersections[i][:] = field1.Sample(intersections[0][i], intersections[1][i], intersections[2][i])
