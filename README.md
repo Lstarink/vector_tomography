@@ -91,8 +91,6 @@ Je hebt niet alle settings nodig, hier een overzicht van wat je in kunt stellen,
   Bij het else statement van measurement file kun je eventueel onze échte metingen gebruiken. Zet dan hier de naam van het bestand dat je wilt gebruiken.
   Ik heb in het mapje Measurements onze metingen gezet. Zet dan natuurlijk "generate_your_own_measurements" op "False"!
   
-  BESCHRIJF WAT WELKE METING IS!!
- 
 -Define your own vector field-
  Zet hier bij u, v, w het vector veld dat je wilt gebruiken als  "generate_your_own_measurements" op "True" staat. Alles is in meters per seconde!
  
@@ -169,7 +167,9 @@ Je hebt niet alle settings nodig, hier een overzicht van wat je in kunt stellen,
       - Neem het vectorveld x = sp.symbols('x')
                             y = sp.symbols('y')
                             z = sp.symbols('z')
-      Het model moet nu bij intersection_error een erg klein getal aangeven, ordegrote 10^-13                                                                                       
+      Het model moet nu bij intersection_error een erg klein getal aangeven, ordegrote 10^-13  
+                                                                                                 
+    - Je moet altijd een plotje wegklikken voordat het model verdergaat met runnen!
                                                                                                  
 
                                                                                                
