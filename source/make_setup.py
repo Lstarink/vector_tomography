@@ -218,6 +218,7 @@ class Measurement_setup:
         try:
             os.mkdir(file_save_dir)
             print("Directory ", file_save_dir,  " Created ")
+            os.mkdir(file_save_dir + '\Plots')
         except FileExistsError:
             print("Directory ", file_save_dir,  " already exists")
 

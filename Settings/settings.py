@@ -17,7 +17,7 @@ generate_your_own_measurement = True
 Settings for what is used en where to save it
 """
 FileName = '3D_setup2.csv'
-Name_of_calculation = 'setup2_0.02@50'
+Name_of_calculation = 'setup21_0.02@50'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
@@ -50,9 +50,9 @@ matrix_integration_setting = 20 #If used needs alot of calculation time, and val
 tube_width = 0.02 #m
 
 """Settings for interpolation"""
-interpolation_offset_x = 0.03 #m
-interpolation_offset_y = 0.03 #m
-interpolation_offset_z = 0.00 #m
+interpolation_offset_x = 0.13 #m
+interpolation_offset_y = 0.13 #m
+interpolation_offset_z = 0.13 #m
 
 
 """Settings for plotting"""
@@ -67,9 +67,13 @@ plot_intersection_field = False
 plot_interpolated = False
 plot_error = False and generate_your_own_measurement
 
-save_figures = True #Letop hij slaat alleen de plotjes op als je de plot instelling ook op True hebt staan.
+save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
 plot_interpolated_resolution = 11   #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
 plot_amount_of_interpolated_slices = 5 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
+inplane_error = True
+arrow_legenda = 0.2#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
+arrow_legenda_string = r'$0.2\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
+
 plot_field_sliced = True
 plot_error_sliced = True and generate_your_own_measurement
 show_sliced = False and plot_error_sliced
