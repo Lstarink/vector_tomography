@@ -234,7 +234,7 @@ class Error:
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, u, v, scale= settings.quiver_scale)
+        plt.quiver(X, Y, v, u, scale= settings.quiver_scale)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
@@ -249,7 +249,7 @@ class Error:
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, u, v)
+        plt.quiver(X, Y, v, u)
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
