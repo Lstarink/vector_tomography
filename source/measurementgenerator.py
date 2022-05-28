@@ -6,146 +6,8 @@ import sympy as sp
 import csv
 from mpl_toolkits.mplot3d import Axes3D
 import settings
+import vector_field
 
-class vector_field:
-    def __init__(self, u, v, w):
-        self.u = u
-        self.v = v
-        self.w = w
-    
-    "Sampling function, returns vector of vector field at u(x_n, y_n, z_n)"
-    def Sample(self, x_n, y_n, z_n):
-        
-        expr_u = self.u
-        expr_v = self.v
-        expr_w = self.w
-        x = sp.symbols('x')
-        y = sp.symbols('y')
-        z = sp.symbols('z')
-        
-        u_x = expr_u.subs({x:x_n, y:y_n, z:z_n})               
-        u_y = expr_v.subs({x:x_n, y:y_n, z:z_n})
-        u_z = expr_w.subs({x:x_n, y:y_n, z:z_n})
-        
-        v = np.array([u_x, u_y, u_z])
-        return(v)
-    
-    "Plots the vector field in range gridSize on a resolution*resolution*resolution grid"
-    def Plot(self,gridSize,resolution):
-        # calculate the size of the setup
-        # x_min, y_min, z_min, x_max, y_max, z_max
-        x = np.linspace(gridSize[0],gridSize[3],resolution)
-        y = np.linspace(gridSize[1],gridSize[4],resolution)
-        z = np.linspace(gridSize[2],gridSize[5],resolution)
-        
-        X, Y, Z = np.meshgrid(x,y,z)
-        
-        u_x_vec = np.zeros([resolution,resolution,resolution])
-        u_y_vec = np.zeros([resolution,resolution,resolution])
-        u_z_vec = np.zeros([resolution,resolution,resolution])
-        
-        for i in range(len(x)):
-            for j in range(len(y)):
-                for k in range(len(z)):
-                    v = self.Sample(x[i], y[j], z[k])
-                    
-                    u_x_vec[i][j][k] = v[0]
-                    u_y_vec[i][j][k] = v[1]
-                    u_z_vec[i][j][k] = v[2]
-        
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        ax.quiver(X, Y, Z, u_x_vec, u_y_vec, u_z_vec)
-        ax.set_xlim([gridSize[0], gridSize[3]])
-        ax.set_ylim([gridSize[1], gridSize[4]])
-        ax.set_zlim([gridSize[2], gridSize[5]])
-        plt.show()
-        
-        return()
-    
-    def plot_sliced(self, axis, gridSize, resolution):
-        x = np.linspace(gridSize[0],gridSize[3],resolution)
-        y = np.linspace(gridSize[1],gridSize[4],resolution)
-        z = np.linspace(gridSize[2],gridSize[5],resolution)
-        
-        Xxy, Yxy = np.meshgrid(x,y)
-        Xxz, Zxz = np.meshgrid(x,z)
-        Yyz, Zyz = np.meshgrid(y,z)
-    
-        if (axis == 'z'): #plot xy plane            
-            for i in range(resolution):
-                
-                u_x_vec = np.zeros([resolution,resolution])
-                u_y_vec = np.zeros([resolution,resolution])
-                for j in range(len(y)):
-                    for k in range(len(z)):
-                        v = self.Sample(x[j], y[k], z[i])
-                    
-                        u_x_vec[j][k] = v[0]
-                        u_y_vec[j][k] = v[1]
-                        
-                plt.figure()                 
-                plt.quiver(Xxy,Yxy, u_y_vec, u_x_vec)
-                #plt.streamplot(x, y, u_y_vec, u_x_vec)
-                plt.title('XY plane at z =' + str(np.round(z[i],2)))
-                plt.xlabel('y axis')
-                plt.ylabel('x axis') #plt.quiver got its axis messed up!
-                plt.xlim(gridSize[0],gridSize[3])
-                plt.ylim(gridSize[1],gridSize[4])
-                plt.gca().set_aspect('equal', adjustable='box')
-                plt.show()
-                
-        elif (axis == 'y'): #plot xz plane            
-            for i in range(resolution):
-                
-                u_x_vec = np.zeros([resolution,resolution])
-                u_z_vec = np.zeros([resolution,resolution])
-                for j in range(resolution):
-                    for k in range(resolution):
-                        v = self.Sample(x[j], y[i], z[k])
-                    
-                        u_x_vec[j][k] = v[0]
-                        u_z_vec[j][k] = v[2]
-                        
-                plt.figure()                 
-                plt.quiver(Xxz,Zxz, u_z_vec, u_x_vec)
-                plt.streamplot(x, z, u_z_vec, u_x_vec)
-                plt.title('XZ plane at y =' + str(np.round(y[i],2)))
-                plt.xlabel('z axis')
-                plt.ylabel('x axis') #plt.quiver got its axis messed up!
-                plt.xlim(gridSize[0],gridSize[3])
-                plt.ylim(gridSize[2],gridSize[5]) #really is z
-                plt.gca().set_aspect('equal', adjustable='box')
-                plt.show()
-
-        elif (axis == 'x'): #plot yz plane            
-            for i in range(resolution):
-                
-                u_y_vec = np.zeros([resolution,resolution])
-                u_z_vec = np.zeros([resolution,resolution])
-                for j in range(resolution):
-                    for k in range(resolution):
-                        v = self.Sample(x[i], y[j], z[k])
-                    
-                        u_y_vec[j][k] = v[1]
-                        u_z_vec[j][k] = v[2]
-                        
-                plt.figure()                 
-                plt.quiver(Yyz,Zyz, u_z_vec, u_y_vec)
-                plt.streamplot(y, z, u_z_vec, u_y_vec)
-                plt.title('YZ plane at x =' + str(np.round(x[i],2)))
-                plt.xlabel('z axis')
-                plt.ylabel('y axis') #plt.quiver got its axis messed up!
-                plt.xlim(gridSize[1],gridSize[4])
-                plt.ylim(gridSize[2],gridSize[5])
-                plt.gca().set_aspect('equal', adjustable='box')
-                plt.show()
-
-        else:
-            print('axis incorrect')
-                    
-        return()
-    
 
 class line:
     def __init__(self, A, B):
@@ -328,8 +190,7 @@ def Generate_V_average(setup):
 
     
     #Make a vector field
-    u, v, w = instantiate_field1()
-    field1 = vector_field(u, v, w)
+    field1 = vector_field.vector_field(settings.u, settings.v, settings.w)
     
     #Load setup
     measurement_setup = Measurement_setup(settings.FileName)
