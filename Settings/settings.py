@@ -22,7 +22,7 @@ generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
 else:
-    measurement_file = 'MET_OBSTAKEL_back_and_forward.npy'
+    measurement_file = 'ZONDER_OBSTAKEL_back_and_forward.npy'
 
 """Define your own vector field"""
 x = sp.symbols('x')
@@ -62,14 +62,14 @@ plot_line_intersections = False
 plot_tube_setup = False
 plot_tube_setup_2d = False
 plot_u0 = False
-plot_original_field = True
-plot_intersection_field = True
+plot_original_field = False
+plot_intersection_field = False
 plot_interpolated = False
 plot_error = False and generate_your_own_measurement
 
 save_figures = True #Letop hij slaat alleen de plotjes op als je de plot instelling ook op True hebt staan.
-plot_interpolated_resolution = 11   #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
-plot_amount_of_interpolated_slices = 5 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
+plot_interpolated_resolution = 3   #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
+plot_amount_of_interpolated_slices = 3 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 plot_field_sliced = True
 plot_error_sliced = True and generate_your_own_measurement
 show_sliced = False and plot_error_sliced

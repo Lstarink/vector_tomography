@@ -235,7 +235,7 @@ class Error:
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, u, v, scale= settings.quiver_scale)
+        plt.quiver(X, Y, u, v, scale= settings.quiver_scale, angles='xy')
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
@@ -245,13 +245,16 @@ class Error:
 
     def ShowQuiver_original(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
+        print('Original Field at ' + axis + '= ' + str(height))
+        print('u:',u)
+        print('v:',v)
         plt.figure(figsize=(15, 15))
         plt.xlim(axis1_lim)
         plt.ylim(axis2_lim)
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, u, v)
+        plt.quiver(X, Y, u, v, angles='xy')
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
