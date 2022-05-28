@@ -224,7 +224,8 @@ class Error:
         plt.title('Relative error at ' + axis + ' =' + str(height))
         if settings.save_figures:
             plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Error_at ' + axis + '= ' + (str(height).replace('.', ',')) +'.jpeg', format='jpeg')
-        plt.show()
+        if settings.show_sliced:
+            plt.show()
 
     def ShowQuiver(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
@@ -234,12 +235,13 @@ class Error:
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, v, u, scale= settings.quiver_scale)
+        plt.quiver(X, Y, u, v, scale= settings.quiver_scale)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
             plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Reconstructed_Field_at ' + axis + '= ' + (str(height).replace('.', ','))+'.jpeg', format='jpeg')
-        plt.show()
+        if settings.show_sliced:
+            plt.show()
 
     def ShowQuiver_original(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
@@ -249,9 +251,10 @@ class Error:
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, v, u)
+        plt.quiver(X, Y, u, v)
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
             plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Original_Field_at ' + axis + '= ' + (str(height).replace('.', ',')) +'.jpeg', format='jpeg')
-        plt.show()
+        if settings.show_sliced:
+            plt.show()
