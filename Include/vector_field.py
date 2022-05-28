@@ -20,6 +20,7 @@ class vector_field:
         expr_u = self.u
         expr_v = self.v
         expr_w = self.w
+
         x = sp.symbols('x')
         y = sp.symbols('y')
         z = sp.symbols('z')
@@ -27,8 +28,12 @@ class vector_field:
         u_x = expr_u.subs({x:x_n, y:y_n, z:z_n})               
         u_y = expr_v.subs({x:x_n, y:y_n, z:z_n})
         u_z = expr_w.subs({x:x_n, y:y_n, z:z_n})
-        
-        v = np.array([u_x, u_y, u_z])
+
+        U = float(u_x)
+        V = float(u_y)
+        W = float(u_z)
+
+        v = np.array([U,V,W])
         return(v)
      
     "Plots the vector field in range gridSize on a resolution*resolution*resolution grid"

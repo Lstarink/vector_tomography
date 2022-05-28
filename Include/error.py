@@ -14,6 +14,7 @@ class Error:
     def sample_fields(self, point):
         if settings.generate_your_own_measurement:
             original_vector = self.original_field.Sample(point[0], point[1], point[2])
+            #print('vector at:', point[0],'    ', point[1], '  ', point[2],' is ',  original_vector)
         else:
             original_vector = None
         reconstructed_vector = self.reconstructed_field.SampleField(point)
@@ -163,7 +164,6 @@ class Error:
                                                                 (v[i][j] - v_orig[i][j]),
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
         Error.ShowQuiver(self, x, z, u, w, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
-
         if settings.plot_error_sliced:
             Error.ShowError(self, x, z, error, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
             Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
@@ -207,11 +207,10 @@ class Error:
                                                                 (v[i][j] - v_orig[i][j]),
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
         Error.ShowQuiver(self, x, y, u, v, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
-
         if settings.plot_error_sliced:
             Error.ShowError(self, x, y, error, z, 'z',  [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
             Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
-
+            Error.ShowAll(self, x, y, u, v, u_orig, v_orig, error, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
 
     def ShowError(self, x, y, error, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         fig1 = plt.figure(figsize=(15, 15))
@@ -229,13 +228,18 @@ class Error:
 
     def ShowQuiver(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
+        u_ = np.transpose(u)
+        v_ = np.transpose(v)
         plt.figure(figsize=(15, 15))
         plt.xlim(axis1_lim)
         plt.ylim(axis2_lim)
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, u, v, scale= settings.quiver_scale, angles='xy')
+        Q = plt.quiver(X, Y, u_, v_, scale= settings.quiver_scale, angles='xy')
+        plt.quiverkey(Q, 0.9, 0.9, 0.1, r'$ 0.1 \frac{m}{s}$', labelpos='E',
+                           coordinates='figure')
+        plt.streamplot(X, Y, u_, v_, linewidth=1)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
@@ -245,19 +249,40 @@ class Error:
 
     def ShowQuiver_original(self, x, y, u, v, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         X, Y = np.meshgrid(x, y)
-        print('Original Field at ' + axis + '= ' + str(height))
-        print('u:',u)
-        print('v:',v)
+        u_ = np.transpose(u)
+        v_ = np.transpose(v)
         plt.figure(figsize=(15, 15))
         plt.xlim(axis1_lim)
         plt.ylim(axis2_lim)
         plt.style.use('fivethirtyeight')
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        plt.quiver(X, Y, u, v, angles='xy')
+        Q = plt.quiver(x, y, u_, v_, angles='xy')
+        plt.quiverkey(Q, 0.9, 0.9, 0.1, r'$ 0.1 \frac{m}{s}$', labelpos='E',
+                           coordinates='figure')
+        plt.streamplot(X, Y, u_, v_,linewidth=1)
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
             plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Original_Field_at ' + axis + '= ' + (str(height).replace('.', ',')) +'.jpeg', format='jpeg')
         if settings.show_sliced:
             plt.show()
+
+    def ShowAll(self, x, y, u, v, u_orig, v_orig, error, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
+        u_ = np.transpose(u)
+        v_ = np.transpose(v)
+        u_orig_ = np.transpose(u_orig)
+        v_orig_ = np.transpose(v_orig)
+
+        fig, axs = plt.subplots(3)
+        fig.suptitle('Original and reconstructed field at ' + axis + '= ' + str(height))
+        axs[0].title.set_text('Reconstructed Field')
+        axs[0].quiver(x, y, u_, v_, angles='xy')
+        axs[0].streamplot(x,y,u_,v_,linewidth=1)
+        axs[1].title.set_text('Original Field')
+        axs[1].quiver(x, y, u_orig_, v_orig_, angles='xy')
+        axs[1].streamplot(x,y,u_orig_,v_orig_,linewidth=1)
+        axs[2].title.set_text('error')
+        img1 = axs[2].contourf(x, y, error, 100)
+        #axs[2].colorbar(img1)
+        fig.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\combined ' + axis + '= ' + (str(height).replace('.', ',')) +'.jpeg', format='jpeg')
