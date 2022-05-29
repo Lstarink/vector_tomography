@@ -10,14 +10,14 @@ import sympy as sp
 
 """Settings for what needs to be run"""
 only_calculate_setup = False
-recalculate_gram_matrix = True
-generate_your_own_measurement = True
+recalculate_gram_matrix = False
+generate_your_own_measurement = False
 
 """
 Settings for what is used en where to save it
 """
-FileName = '3D_setup2.csv'
-Name_of_calculation = 'setup21_0.02@50'
+FileName = 'final_setup.csv'
+Name_of_calculation = 'final_setup__0.02@50'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
@@ -50,9 +50,9 @@ matrix_integration_setting = 20 #If used needs alot of calculation time, and val
 tube_width = 0.02 #m
 
 """Settings for interpolation"""
-interpolation_offset_x = 0.13 #m
-interpolation_offset_y = 0.13 #m
-interpolation_offset_z = 0.13 #m
+interpolation_offset_x = 0.03 #m
+interpolation_offset_y = 0.03 #m
+interpolation_offset_z = 0.0 #m
 
 
 """Settings for plotting"""
