@@ -10,19 +10,19 @@ import sympy as sp
 
 """Settings for what needs to be run"""
 only_calculate_setup = False
-recalculate_gram_matrix = False
+recalculate_gram_matrix = True
 generate_your_own_measurement = False
 
 """
 Settings for what is used en where to save it
 """
 FileName = 'final_setup.csv'
-Name_of_calculation = 'final_setup__0.02@50'
+Name_of_calculation = 'final_setup_zonder__0.02@50'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
 else:
-    measurement_file = 'MET_OBSTAKEL_back_and_forward.npy'
+    measurement_file = 'ZONDER_OBSTAKEL_CORRECTED_back_and_forward.npy'
 
 """Define your own vector field"""
 x = sp.symbols('x')
@@ -68,11 +68,11 @@ plot_interpolated = False
 plot_error = False and generate_your_own_measurement
 
 save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
-plot_interpolated_resolution = 11   #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
-plot_amount_of_interpolated_slices = 5 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
+plot_interpolated_resolution = 16   #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
+plot_amount_of_interpolated_slices = 10 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 inplane_error = True
-arrow_legenda = 0.2#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
-arrow_legenda_string = r'$0.2\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
+arrow_legenda = 5.0#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
+arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
 
 plot_field_sliced = True
 plot_error_sliced = True and generate_your_own_measurement
@@ -88,6 +88,6 @@ line_integral_iteration_steps = 100
 if generate_your_own_measurement:
     quiver_scale = None
 else:
-    quiver_scale = 133
+    quiver_scale = 75
 
 plot_tube_intersections = False and use_integration_for_gram_matrix

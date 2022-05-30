@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Settings" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Setups" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Measurements" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (vector_tomography)" jdkType="Python SDK" />
