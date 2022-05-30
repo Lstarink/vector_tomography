@@ -46,8 +46,8 @@ sensor_stddev = 0.00166 #meters
 
 """Settings for Gram Matrix"""
 use_integration_for_gram_matrix = True
-matrix_integration_setting = 20 #If used needs alot of calculation time, and value has to be set to at least 100
-tube_width = 0.02 #m
+matrix_integration_setting = 50 #If used needs alot of calculation time, and value has to be set to at least 100
+tube_width = 0.0225 #m
 
 """Settings for interpolation"""
 interpolation_offset_x = 0.03 #m
