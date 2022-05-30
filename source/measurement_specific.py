@@ -186,9 +186,9 @@ class Measurement:
         plt.show()
 
     def plot_field_slices(self, vector_field=None):
-        x = np.linspace(self.setup.grid.x_min, self.setup.grid.x_max, settings.plot_amount_of_interpolated_slices)
-        y = np.linspace(self.setup.grid.y_min, self.setup.grid.y_max, settings.plot_amount_of_interpolated_slices)
-        z = np.linspace(self.setup.grid.z_min, self.setup.grid.z_max, settings.plot_amount_of_interpolated_slices)
+        x = np.linspace(self.setup.grid.x_min + settings.intersection_boundary_edge_x, self.setup.grid.x_max-settings.intersection_boundary_edge_x, settings.plot_amount_of_interpolated_slices)
+        y = np.linspace(self.setup.grid.y_min + settings.intersection_boundary_edge_y, self.setup.grid.y_max-settings.intersection_boundary_edge_y, settings.plot_amount_of_interpolated_slices)
+        z = np.linspace(self.setup.grid.z_min + settings.intersection_boundary_edge_z, self.setup.grid.z_max-settings.intersection_boundary_edge_z, settings.plot_amount_of_interpolated_slices)
 
         error_ = error.Error(vector_field, self.interpolated_field, self.setup.grid, self.intersections)
 
