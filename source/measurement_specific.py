@@ -47,7 +47,7 @@ class Measurement:
         betas = np.matmul(B__3,V)
         
         self.u0 = vector_field.vector_field(sp.Float(betas[0]), sp.Float(betas[1]), sp.Float(betas[2]))
-    
+        print('u0 = ', betas)
         return()
                 
     def Plot_U0(self):
