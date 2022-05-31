@@ -10,28 +10,28 @@ import sympy as sp
 
 """Settings for what needs to be run"""
 only_calculate_setup = False
-recalculate_gram_matrix = True
+recalculate_gram_matrix = False
 generate_your_own_measurement = False
 
 """
 Settings for what is used en where to save it
 """
 FileName = 'final_setup.csv'
-Name_of_calculation = 'final_setup_zonder__0.02@50'
+Name_of_calculation = 'final_setup_met_obstakel__0.0225@20'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
 else:
-    measurement_file = 'ZONDER_OBSTAKEL_CORRECTED_back_and_forward.npy'
+    measurement_file = 'MET_OBSTAKEL_back_and_forward.npy'
 
 """Define your own vector field"""
 x = sp.symbols('x')
 y = sp.symbols('y')
 z = sp.symbols('z')
 
-u = -(sp.Float(0.1)) * (x-0.5)
-v = -(sp.Float(0.1))* (y-0.5)
-w = (sp.Float(0.2))*(z+1)
+u = -(sp.Float(1.0)) * (x-0.101)
+v = -(sp.Float(1.0))* (y-0.101)
+w = (sp.Float(2.0))*(z+1)
 
 """Settings for intersections"""
 intersection_boundary_edge_x = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
@@ -41,12 +41,12 @@ use_only_full_rank_intersections = False
 
 """Settings for error of the sensors"""
 use_sensor_error = False
-sensor_stddev = 0.00166 #meters
+sensor_stddev = 0.000166 #meters
 
 
 """Settings for Gram Matrix"""
 use_integration_for_gram_matrix = True
-matrix_integration_setting = 50 #If used needs alot of calculation time, and value has to be set to at least 100
+matrix_integration_setting = 20 #If used needs alot of calculation time, and value has to be set to at least 100
 tube_width = 0.0225 #m
 
 """Settings for interpolation"""
@@ -69,7 +69,7 @@ plot_error = False and generate_your_own_measurement
 
 save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
 plot_interpolated_resolution = 16   #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
-plot_amount_of_interpolated_slices = 10 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
+plot_amount_of_interpolated_slices = 5 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 inplane_error = True
 arrow_legenda = 5.0#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
 arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
@@ -88,6 +88,6 @@ line_integral_iteration_steps = 100
 if generate_your_own_measurement:
     quiver_scale = None
 else:
-    quiver_scale = 75
+    quiver_scale = 300
 
 plot_tube_intersections = False and use_integration_for_gram_matrix
