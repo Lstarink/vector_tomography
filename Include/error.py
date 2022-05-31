@@ -132,10 +132,14 @@ class Error:
         Error.ShowQuiver(self, y, z, v, w, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
 
         if settings.plot_error_sliced:
-            Error.ShowError(self, y, z, error, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
-            Error.ShowQuiver_original(self, y, z, v_orig, w_orig, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
-            Error.ShowAll(self, y, z, v, w, v_orig, w_orig, error, x, 'x', [self.grid.y_min, self.grid.y_max],
-                          [self.grid.z_min, self.grid.z_max], 'y', 'z')
+            if settings.only_combined:
+                Error.ShowAll(self, y, z, v, w, v_orig, w_orig, error, x, 'x', [self.grid.y_min, self.grid.y_max],
+                              [self.grid.z_min, self.grid.z_max], 'y', 'z')
+            else:
+                Error.ShowError(self, y, z, error, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
+                Error.ShowQuiver_original(self, y, z, v_orig, w_orig, x, 'x', [self.grid.y_min, self.grid.y_max], [self.grid.z_min, self.grid.z_max], 'y', 'z')
+                Error.ShowAll(self, y, z, v, w, v_orig, w_orig, error, x, 'x', [self.grid.y_min, self.grid.y_max],
+                              [self.grid.z_min, self.grid.z_max], 'y', 'z')
     def SliceY(self, y):
 
         res = settings.plot_interpolated_resolution
@@ -187,10 +191,15 @@ class Error:
 
         Error.ShowQuiver(self, x, z, u, w, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
         if settings.plot_error_sliced:
-            Error.ShowError(self, x, z, error, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
-            Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
-            Error.ShowAll(self, x, z, u, w, u_orig, w_orig, error, y, 'y', [self.grid.x_min, self.grid.x_max],
-                          [self.grid.z_min, self.grid.z_max], 'x', 'z')
+            if settings.only_combined:
+                Error.ShowAll(self, x, z, u, w, u_orig, w_orig, error, y, 'y', [self.grid.x_min, self.grid.x_max],
+                              [self.grid.z_min, self.grid.z_max], 'x', 'z')
+            else:
+
+                Error.ShowError(self, x, z, error, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
+                Error.ShowQuiver_original(self, x, z, u_orig, w_orig, y, 'y', [self.grid.x_min, self.grid.x_max], [self.grid.z_min, self.grid.z_max], 'x', 'z')
+                Error.ShowAll(self, x, z, u, w, u_orig, w_orig, error, y, 'y', [self.grid.x_min, self.grid.x_max],
+                              [self.grid.z_min, self.grid.z_max], 'x', 'z')
 
     def SliceZ(self, z):
 
@@ -245,9 +254,14 @@ class Error:
 
         Error.ShowQuiver(self, x, y, u, v, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
         if settings.plot_error_sliced:
-            Error.ShowError(self, x, y, error, z, 'z',  [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
-            Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
-            Error.ShowAll(self, x, y, u, v, u_orig, v_orig, error, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
+            if settings.only_combined:
+                Error.ShowAll(self, x, y, u, v, u_orig, v_orig, error, z, 'z', [self.grid.x_min, self.grid.x_max],
+                              [self.grid.y_min, self.grid.y_max], 'x', 'y')
+            else:
+
+                Error.ShowError(self, x, y, error, z, 'z',  [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
+                Error.ShowQuiver_original(self, x, y, u_orig, v_orig, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
+                Error.ShowAll(self, x, y, u, v, u_orig, v_orig, error, z, 'z', [self.grid.x_min, self.grid.x_max], [self.grid.y_min, self.grid.y_max], 'x', 'y')
 
     def ShowError(self, x, y, error, height, axis, axis1_lim, axis2_lim, axis1_name, axis2_name):
         error_ = error.transpose()
@@ -313,7 +327,7 @@ class Error:
         v_orig_ = np.transpose(v_orig)
         error_ = error.transpose()
 
-        fig, (ax1, ax2, ax3) = plt.subplots(1,3,figsize=(45,15))
+        fig, (ax2, ax1, ax3) = plt.subplots(1,3,figsize=(45,15))
         fig.suptitle('Original and reconstructed field at ' + axis + '= ' + str(height), fontsize=35)
 
         ax1.title.set_text('Reconstructed Field')

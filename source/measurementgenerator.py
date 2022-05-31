@@ -146,7 +146,7 @@ class Measurement_setup:
                             
         
         for i in range(len(self.lines)):
-            V_average[i] = self.lines[i].V_average(field) + error[i]
+            V_average[i] = (1+error[i])*self.lines[i].V_average(field)
         
         np.save('../Measurements/'+ settings.generated_measurement_file, V_average)
     

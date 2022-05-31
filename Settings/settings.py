@@ -10,14 +10,14 @@ import sympy as sp
 
 """Settings for what needs to be run"""
 only_calculate_setup = False
-recalculate_gram_matrix = False
+recalculate_gram_matrix = True
 generate_your_own_measurement = True
 
 """
 Settings for what is used en where to save it
 """
 FileName = 'final_setup.csv'
-Name_of_calculation = 'final_setup_curl__0.0225@50'
+Name_of_calculation = 'final_setup_0.0225@20'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
@@ -63,11 +63,12 @@ plot_tube_setup = False
 plot_tube_setup_2d = False
 plot_u0 = False
 plot_original_field = False
-plot_intersection_field = True
+plot_intersection_field = False
 plot_interpolated = False
 plot_error = False and generate_your_own_measurement
 
 save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
+only_combined = True
 plot_interpolated_resolution = 25  #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
 plot_amount_of_interpolated_slices = 3 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 inplane_error = True
