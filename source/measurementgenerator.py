@@ -162,7 +162,7 @@ class Measurement_setup:
                     influence_error_d0 = (c/(2*d1) - c/(2*d2))*error_d0
                     influence_error_d1 = (d0*c/(2*d1**2))*error_d1
                     influence_error_d2 = (d0*c/(2*d2**2))*error_d2
-                    influence_error_c = -(d0/(2*d2))*error_c
+                    influence_error_c = (d0/(2*d1)- (d0/(2*d2)))*error_c
                     V_average[index] = v_perfect + influence_error_d0 + influence_error_d1 + influence_error_d2 \
                                        + influence_error_c
             else:
