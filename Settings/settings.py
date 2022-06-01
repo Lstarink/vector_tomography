@@ -10,14 +10,14 @@ import sympy as sp
 
 """Settings for what needs to be run"""
 only_calculate_setup = False
-recalculate_gram_matrix = True
+recalculate_gram_matrix = False
 generate_your_own_measurement = True
 
 """
 Settings for what is used en where to save it
 """
 FileName = 'final_setup.csv'
-Name_of_calculation = 'final_setup_0.0225@20'
+Name_of_calculation = 'final_setup_0.0225@100'
 generated_measurement_file = 'Speeds' + Name_of_calculation + '.npy'
 if generate_your_own_measurement:
     measurement_file = generated_measurement_file
@@ -40,8 +40,9 @@ intersection_boundary_edge_z = 0.000
 use_only_full_rank_intersections = False
 
 """Settings for error of the sensors"""
-use_sensor_error = False
-sensor_stddev = 0.000166 #meters
+use_sensor_error = True
+sensor_stddev = 0.000155 #meters
+temperature_increase = 0 #kelvin
 
 
 """Settings for Gram Matrix"""
@@ -75,8 +76,8 @@ inplane_error = True
 arrow_legenda = 5.0#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
 arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
 
-plot_field_sliced = True
-plot_error_sliced = True and generate_your_own_measurement
+plot_field_sliced = False
+plot_error_sliced = False and generate_your_own_measurement
 show_sliced = False and plot_error_sliced
 calculate_error = True and generate_your_own_measurement
 

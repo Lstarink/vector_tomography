@@ -139,15 +139,35 @@ class Measurement_setup:
         
         V_average = np.zeros(len(self.lines))
         error = np.zeros([len(self.lines)])
-        
-        if (settings.use_sensor_error == True):
-            for i in range(len(self.lines)):
-                error[i] = np.random.normal(0, settings.sensor_stddev)
-                            
-        
-        for i in range(len(self.lines)):
-            V_average[i] = (1+error[i])*self.lines[i].V_average(field)
-        
+
+        c = 343
+
+        for index, line in enumerate(self.lines):
+            d0 = line.length
+            v_perfect = line.V_average(field)
+            if settings.use_sensor_error:
+                delta = ((2*d0*c/v_perfect) - np.sqrt((2*d0*c/v_perfect)**2 - 2*d0**2))/2
+                d1 = d0-delta
+                d2 = d0+delta
+                v_check = 2*(d0/d1 -d0/d2)*c
+                if (v_perfect - v_check) > 10**-3:
+                    print('my quadratic function breaks for this :(')
+                    raise ValueError
+                else:
+                    error_d0 = np.random.normal(0, settings.sensor_stddev)
+                    error_d1 = np.random.normal(0, settings.sensor_stddev)
+                    error_d2 = np.random.normal(0, settings.sensor_stddev)
+                    error_c = settings.temperature_increase
+
+                    influence_error_d0 = (c/(2*d1) - c/(2*d2))*error_d0
+                    influence_error_d1 = (d0*c/(2*d1**2))*error_d1
+                    influence_error_d2 = (d0*c/(2*d2**2))*error_d2
+                    influence_error_c = -(d0/(2*d2))*error_c
+                    V_average[index] = v_perfect + influence_error_d0 + influence_error_d1 + influence_error_d2 \
+                                       + influence_error_c
+            else:
+                V_average[index] = v_perfect
+
         np.save('../Measurements/'+ settings.generated_measurement_file, V_average)
     
     def plot_setup(self):
