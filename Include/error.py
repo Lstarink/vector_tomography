@@ -48,6 +48,7 @@ class Error:
         y = np.linspace(self.grid.y_min + settings.interpolation_offset_y, self.grid.y_max - settings.interpolation_offset_y, res)
         z = np.linspace(self.grid.z_min + settings.interpolation_offset_z, self.grid.z_max - settings.interpolation_offset_z, res)
 
+        error_list = []
 
         u = np.zeros([res, res])
         v = np.zeros([res, res])
@@ -76,9 +77,35 @@ class Error:
                                                             (w[i][j] - w_orig[i][j])])))/(norm_v_original)
                     else:
                         error = 0
+                    error_list.append(100*error)
                     self.global_error += error
 
         print('global error = ' + str(self.global_error*100/(res**3)) +' %')
+        plt.figure()
+        plt.hist(error_list,bins=100)
+        plt.savefig('..\Output\calculations_' + settings.Name_of_calculation + '\Plots\Filtered_error100' + '.jpeg',
+                    format='jpeg')
+
+
+        error_list.sort()
+        filtered_error = error_list[0: int(0.9*res**3)]
+
+        filtered_global_error = sum(filtered_error)/(0.9*res**3)
+        print('filtered_global_error90 = ' + str(filtered_global_error) + ' %')
+        plt.figure()
+        plt.hist(filtered_error,bins=100)
+        plt.savefig('..\Output\calculations_' + settings.Name_of_calculation + '\Plots\Filtered_error90' + '.jpeg',
+                    format='jpeg')
+
+        filtered_error2 = error_list[0: int(0.75*res**3)]
+
+        filtered_global_error2 = sum(filtered_error2)/(0.9*res**3)
+        print('filtered_global_error = ' + str(filtered_global_error2) + ' %')
+        plt.figure()
+        plt.hist(filtered_error2,bins=100)
+        plt.savefig('..\Output\calculations_' + settings.Name_of_calculation + '\Plots\Filtered_error75' + '.jpeg',
+                    format='jpeg')
+
 
     def SliceX(self, x):
 
