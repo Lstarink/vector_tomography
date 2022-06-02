@@ -36,7 +36,7 @@ class vector_field:
         v = np.array([U,V,W])
         return(v)
      
-    "Plots the vector field in range gridSize on a resolution*resolution*resolution grid"
+    "Plots_details_sensorstddev_no_temp the vector field in range gridSize on a resolution*resolution*resolution grid"
     def Plot(self,gridSize,resolution):
         #calculate the size of the setup
         #x_min, y_min, z_min, x_max, y_max, z_max

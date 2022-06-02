@@ -1,0 +1,79 @@
+n1 = 3
+n2 = 1.5
+
+u = (sp.Float(0.3)) * (y-0.101) + sp.Float(0.6)*sp.cos(sp.pi*n2*z/0.101)
+v = -(sp.Float(0.4))* (x-0.101)
+w = (sp.Float(4.0)) + sp.Float(6)*sp.sin(sp.pi*n2*x/0.101)
+
+use_sensor_error = True
+sensor_stddev = 0.000455 #meters
+temperature_increase = 0 #kelvin
+
+
+intersection error = 42.49492279683685 %
+global error = 319.3294729188572 %
+filtered_global_error = 140.39016788637818 %
+filtered_global_error = 66.33267584859021 %
+
+intersection error = 41.10088346173955 %
+global error = 327.510529735538 %
+filtered_global_error90 = 143.7705291989914 %
+filtered_global_error = 67.11989569521458 %
+
+intersection error = 42.31971359546461 %
+global error = 314.17277373415675 %
+filtered_global_error90 = 138.14556199712908 %
+filtered_global_error = 64.45749296459009 %
+
+intersection error = 44.254353724006556 %
+global error = 307.7961279981036 %
+filtered_global_error90 = 136.24923353710162 %
+filtered_global_error = 63.90247237696623 %
+
+intersection error = 39.85578276141427 %
+global error = 331.28936199449146 %
+filtered_global_error90 = 144.46166022381902 %
+filtered_global_error = 67.5470668590969 %
+
+NU temperature_increase = 1 #kelvin
+
+intersection error = 57.445223895520705 %
+global error = 247.52241891537193 %
+filtered_global_error90 = 116.78408200972841 %
+filtered_global_error = 58.19236022007472 %
+
+intersection error = 57.45641732496762 %
+global error = 253.72457934048953 %
+filtered_global_error90 = 118.55689160928563 %
+filtered_global_error = 58.56066350052683 %
+
+intersection error = 57.13632916251756 %
+global error = 253.40280984161714 %
+filtered_global_error90 = 118.76218679808159 %
+filtered_global_error = 58.92289827111806 %
+
+intersection error = 54.43072112149931 %
+global error = 264.79739646925174 %
+filtered_global_error90 = 122.44379470353726 %
+filtered_global_error = 60.288396939150815 %
+
+intersection error = 53.15668661170553 %
+global error = 270.53105099107995 %
+filtered_global_error90 = 123.93418949687951 %
+filtered_global_error = 59.899947183098824 %
+
+NU flawless
+intersection error = 41.78504880750037 %
+global error = 316.72372437227415 %
+filtered_global_error90 = 138.67321361385092 %
+filtered_global_error = 64.28383252987042 %
+
+
+
+
+
+
+
+
+
+

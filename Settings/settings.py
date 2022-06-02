@@ -29,9 +29,12 @@ x = sp.symbols('x')
 y = sp.symbols('y')
 z = sp.symbols('z')
 
-u = (sp.Float(1.0)) * (y-0.101) + sp.Float(0.5)*sp.cos(60*y)
-v = -(sp.Float(1.0))* (x-0.101) + sp.Float(0.5)*sp.sin(60*x)
-w = (sp.Float(2.0))
+n1 = 3
+n2 = 1.5
+
+u = (sp.Float(0.3)) * (y-0.101) + sp.Float(0.6)*sp.cos(sp.pi*n2*z/0.101)
+v = -(sp.Float(0.4))* (x-0.101)
+w = (sp.Float(4.0)) + sp.Float(6)*sp.sin(sp.pi*n2*x/0.101)
 
 """Settings for intersections"""
 intersection_boundary_edge_x = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
@@ -40,8 +43,8 @@ intersection_boundary_edge_z = 0.000
 use_only_full_rank_intersections = False
 
 """Settings for error of the sensors"""
-use_sensor_error = True
-sensor_stddev = 0.000155 #meters
+use_sensor_error = False
+sensor_stddev = 0.000 #meters
 temperature_increase = 0 #kelvin
 
 
@@ -71,7 +74,7 @@ plot_error = False and generate_your_own_measurement
 save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
 only_combined = True
 plot_interpolated_resolution = 25  #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
-plot_amount_of_interpolated_slices = 3 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
+plot_amount_of_interpolated_slices = 6 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 inplane_error = True
 arrow_legenda = 5.0#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
 arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
