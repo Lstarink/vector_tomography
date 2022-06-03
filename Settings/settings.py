@@ -51,9 +51,9 @@ intersection_boundary_edge_z = 0.000
 use_only_full_rank_intersections = False
 
 """Settings for error of the sensors"""
-use_sensor_error = False
-sensor_stddev = 0.000455 #meters
-temperature_increase = 0.5 #kelvin
+use_sensor_error = True
+sensor_stddev = 0.000433 #meters
+temperature_increase = 0.0 #kelvin
 
 
 """Settings for Gram Matrix"""
@@ -76,10 +76,10 @@ plot_tube_setup_2d = False
 plot_u0 = False
 plot_original_field = False
 plot_intersection_field = False
-plot_interpolated = True
+plot_interpolated = False
 plot_error = False and generate_your_own_measurement
 
-save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
+save_figures = False #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
 only_combined = False
 plot_interpolated_resolution = 25  #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
 plot_amount_of_interpolated_slices = 3 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
@@ -87,8 +87,8 @@ inplane_error = True
 arrow_legenda = 5 #Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
 arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
 
-plot_field_sliced = True
-plot_error_sliced = True and generate_your_own_measurement
+plot_field_sliced = False
+plot_error_sliced = False and generate_your_own_measurement
 show_sliced = False and plot_error_sliced
 calculate_error = True and generate_your_own_measurement
 
