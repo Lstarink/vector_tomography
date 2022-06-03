@@ -11,7 +11,7 @@ import sympy as sp
 """Settings for what needs to be run"""
 only_calculate_setup = False
 recalculate_gram_matrix = False
-generate_your_own_measurement = True
+generate_your_own_measurement = False
 
 """
 Settings for what is used en where to save it
@@ -30,11 +30,12 @@ y = sp.symbols('y')
 z = sp.symbols('z')
 
 n1 = 3
-n2 = 1.5
+n2 = 3
+theta = sp.pi/4
 
-u = (sp.Float(0.3)) * (y-0.101) + sp.Float(0.6)*sp.cos(sp.pi*n2*z/0.101)
-v = -(sp.Float(0.4))* (x-0.101)
-w = (sp.Float(4.0)) + sp.Float(6)*sp.sin(sp.pi*n2*x/0.101)
+u = ((sp.Float(0.3)) * (y-0.101) + sp.Float(0.6)*sp.cos(sp.pi*n2*y/0.101))
+v = (-(sp.Float(0.3))* (x-0.101) + sp.Float(0.6)*sp.sin(sp.pi*n2*x/0.101))
+w = (sp.Float(4.0))
 
 """Settings for intersections"""
 intersection_boundary_edge_x = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
@@ -44,8 +45,8 @@ use_only_full_rank_intersections = False
 
 """Settings for error of the sensors"""
 use_sensor_error = False
-sensor_stddev = 0.000 #meters
-temperature_increase = 0 #kelvin
+sensor_stddev = 0.000455 #meters
+temperature_increase = 0.5 #kelvin
 
 
 """Settings for Gram Matrix"""
@@ -68,19 +69,19 @@ plot_tube_setup_2d = False
 plot_u0 = False
 plot_original_field = False
 plot_intersection_field = False
-plot_interpolated = False
+plot_interpolated = True
 plot_error = False and generate_your_own_measurement
 
 save_figures = True #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
-only_combined = True
+only_combined = False
 plot_interpolated_resolution = 25  #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
-plot_amount_of_interpolated_slices = 6 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
+plot_amount_of_interpolated_slices = 3 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 inplane_error = True
-arrow_legenda = 5.0#Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
+arrow_legenda = 5 #Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
 arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
 
-plot_field_sliced = False
-plot_error_sliced = False and generate_your_own_measurement
+plot_field_sliced = True
+plot_error_sliced = True and generate_your_own_measurement
 show_sliced = False and plot_error_sliced
 calculate_error = True and generate_your_own_measurement
 
@@ -93,6 +94,6 @@ line_integral_iteration_steps = 100
 if generate_your_own_measurement:
     quiver_scale = None
 else:
-    quiver_scale = 300
+    quiver_scale = 150
 
 plot_tube_intersections = False and use_integration_for_gram_matrix

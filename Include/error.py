@@ -315,10 +315,10 @@ class Error:
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
         Q = plt.quiver(X, Y, u_, v_, scale= settings.quiver_scale, angles='xy')
-        plt.quiverkey(Q, 0.9, 0.9, settings.arrow_legenda, settings.arrow_legenda_string, labelpos='E',
+        plt.quiverkey(Q, 0.85, 0.83, settings.arrow_legenda, settings.arrow_legenda_string, labelpos='E',
                            coordinates='figure')
         plt.streamplot(X, Y, u_, v_, linewidth=1)
-        plt.title('Reconstructed Field at ' + axis + '= ' + str(height))
+        plt.title('Reconstructed Field at ' + axis + '= ' + str(round(height,3)))
         plt.gca().set_aspect('equal', adjustable='box')
         if settings.save_figures:
             plt.savefig('..\Output\calculations_'+settings.Name_of_calculation +'\Plots\Reconstructed_Field_at ' + axis + '= ' + (str(height).replace('.', ','))+'.jpeg', format='jpeg')

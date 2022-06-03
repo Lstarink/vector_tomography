@@ -23,6 +23,7 @@ class Measurement:
      
     
     def AddVToLine(self):
+        #TODO CORRECT THIS AGAIN!!!!!!
         for i in range(len(self.setup.lines)):
             try:    
                 self.setup.lines[i].Set_V_Average(self.measurements[i])
@@ -167,7 +168,8 @@ class Measurement:
         u = np.zeros([res, res ,res])
         v = np.zeros([res, res, res])
         w = np.zeros([res, res, res])
-        
+
+        w_sum = 0
         for i in range(res):
             for j in range(res):
                 for k in range(res):
@@ -175,6 +177,12 @@ class Measurement:
                     u[i][j][k] = vector[0]
                     v[i][j][k] = vector[1]
                     w[i][j][k] = vector[2]
+
+                    w_sum += vector[2]
+
+        w_average = w_sum/res**3
+
+        print('average z componenet', w_average)
         
         fig = plt.figure(figsize=(15,15))
         ax = fig.add_subplot(111, projection='3d')

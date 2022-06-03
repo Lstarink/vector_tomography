@@ -1,0 +1,91 @@
+Perfect
+intersection error = 2.6204719914748393 %
+global error = 9.939662666598386 %
+filtered_global_error90 = 8.881866021047257 %
+filtered_global_error = 6.387148882894556 %
+
+Perfect rotated 45 degrees
+intersection error = 8.536521107129845 %
+global error = 12.132537006835758 %
+filtered_global_error90 = 11.123819248469104 %
+filtered_global_error = 8.401174224180563 %
+
+0.0Kelvin
+intersection error = 23.219224884459653 %
+global error = 16.05186197470108 %
+filtered_global_error90 = 14.439676314118087 %
+filtered_global_error = 10.617638570817688 %
+
+intersection error = 10.410184005838376 %
+global error = 16.020904106814864 %
+filtered_global_error90 = 14.458681943402421 %
+filtered_global_error = 10.686610202792423 %
+
+intersection error = 25.773998384298014 %
+global error = 15.325615934642014 %
+filtered_global_error90 = 13.460449530220593 %
+filtered_global_error = 9.584985900227368 %
+
+intersection error = 17.944430189043352 %
+global error = 17.991704407343274 %
+filtered_global_error90 = 16.458943424869936 %
+filtered_global_error = 12.288699249830676 %
+
+intersection error = 16.125223848367995 %
+global error = 16.871972534882605 %
+filtered_global_error90 = 15.258823540443368 %
+filtered_global_error = 11.246270014177288 %
+
+0.5 Kelvin
+
+intersection error = 26.941579383562942 %
+global error = 22.701654585888843 %
+filtered_global_error90 = 21.219191739485478 %
+filtered_global_error = 16.46374243460613 %
+
+intersection error = 35.08016130401425 %
+global error = 23.76246982657751 %
+filtered_global_error90 = 22.331662553133043 %
+filtered_global_error = 17.464483393243427 %
+
+intersection error = 37.73122711721528 %
+global error = 19.230560341919368 %
+filtered_global_error90 = 17.504288057786123 %
+filtered_global_error = 13.295144492829094 %
+
+intersection error = 30.640368390318162 %
+global error = 23.990677740797818 %
+filtered_global_error90 = 22.551059248554242 %
+filtered_global_error = 17.564494046207034 %
+
+intersection error = 16.06308963608512 %
+global error = 21.29616218308629 %
+filtered_global_error90 = 20.094913757137366 %
+filtered_global_error = 15.767414341483295 %
+
+1.0 Kelvin
+
+intersection error = 41.55755776317256 %
+global error = 27.673232746812708 %
+filtered_global_error90 = 26.415418700812896 %
+filtered_global_error = 21.070904697366128 %
+
+intersection error = 39.95065729399922 %
+global error = 28.668542257612497 %
+filtered_global_error90 = 27.356701713263725 %
+filtered_global_error = 21.680213182843328 %
+
+intersection error = 35.31460501462648 %
+global error = 36.475176314597746 %
+filtered_global_error90 = 35.24707004934753 %
+filtered_global_error = 28.327536269016225 %
+
+intersection error = 38.19639513163405 %
+global error = 38.21439762245631 %
+filtered_global_error90 = 36.54834718743343 %
+filtered_global_error = 29.180687977485793 %
+
+intersection error = 44.85999306132487 %
+global error = 43.039517235084574 %
+filtered_global_error90 = 41.643900369242644 %
+filtered_global_error = 33.58715766447088 %
