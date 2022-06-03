@@ -11,7 +11,7 @@ import sympy as sp
 """Settings for what needs to be run"""
 only_calculate_setup = False
 recalculate_gram_matrix = False
-generate_your_own_measurement = False
+generate_your_own_measurement = True
 
 """
 Settings for what is used en where to save it
@@ -33,9 +33,16 @@ n1 = 3
 n2 = 3
 theta = sp.pi/4
 
-u = ((sp.Float(0.3)) * (y-0.101) + sp.Float(0.6)*sp.cos(sp.pi*n2*y/0.101))
-v = (-(sp.Float(0.3))* (x-0.101) + sp.Float(0.6)*sp.sin(sp.pi*n2*x/0.101))
+x_ = sp.cos(theta)*(x-0.101) - sp.sin(theta)*(y-0.101)
+y_ = sp.sin(theta)*(x-0.101) + sp.cos(theta)*(y-0.101)
+
+u_ = ((sp.Float(0.3)) * y_ + sp.Float(0.6)*sp.cos(sp.pi*n2*y_/0.101))
+v_ = (-(sp.Float(0.3))*x_ +sp.Float(0.6)*sp.sin(sp.pi*n2*x_/0.101))
 w = (sp.Float(4.0))
+
+u = sp.cos(theta+sp.pi/2)*u_ - sp.sin(theta+sp.pi/2)*v_
+v = sp.sin(theta+sp.pi/2)*u_ + sp.cos(theta+sp.pi/2)*v_
+
 
 """Settings for intersections"""
 intersection_boundary_edge_x = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
