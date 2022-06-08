@@ -9,6 +9,9 @@ class Error:
         self.reconstructed_field = reconstructed_field
         self.grid = grid
         self.global_error = 0
+        self.total_yz_error = 0
+        self.total_xz_error = 0
+        self.total_xy_error = 0
         self.global_error_intersections = 0
         self.intersections = intersections
 
@@ -39,7 +42,8 @@ class Error:
                 error = 0
             self.global_error_intersections += error
 
-        print('intersection error = ' + str(self.global_error_intersections * 100 / len(self.intersections)) + ' %')
+        #print('intersection error = ' + str(self.global_error_intersections * 100 / len(self.intersections)) + ' %')
+        print(str(self.global_error_intersections * 100 / len(self.intersections)) + ' %')
 
     def Global_Error(self):
         res = settings.plot_interpolated_resolution
@@ -80,18 +84,51 @@ class Error:
                     error_list.append(100*error)
                     self.global_error += error
 
-        print('global error = ' + str(self.global_error*100/(res**3)) +' %')
+                    yz_norm_original = np.linalg.norm(np.array([v_orig[i][j]], w_orig[i][j]))
+                    if yz_norm_original != 0:
+                        yz_error = (np.linalg.norm(np.array([(v[i][j] - v_orig[i][j]),
+                                                            (w[i][j] - w_orig[i][j])])))/(yz_norm_original)
+                    else:
+                        yz_error = 0
+
+                    self.total_yz_error += yz_error
+
+                    xz_norm_original = np.linalg.norm(np.array([u_orig[i][j]], w_orig[i][j]))
+                    if xz_norm_original != 0:
+                        xz_error = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
+                                                            (w[i][j] - w_orig[i][j])])))/(xz_norm_original)
+                    else:
+                        xz_error = 0
+
+                    self.total_xz_error += xz_error
+
+                    xy_norm_original = np.linalg.norm(np.array([u_orig[i][j]], v_orig[i][j]))
+                    if xy_norm_original != 0:
+                        xy_error = (np.linalg.norm(np.array([(u[i][j] - u_orig[i][j]),
+                                                            (v[i][j] - v_orig[i][j])])))/(xy_norm_original)
+                    else:
+                        xy_error = 0
+
+                    self.total_xy_error += xy_error
+
+        #print('global error = ' + str(self.global_error*100/(res**3)) +' %')
+        print(str(self.global_error*100/(res**3)) +' %')
         plt.figure()
         plt.hist(error_list,bins=100)
         plt.savefig('..\Output\calculations_' + settings.Name_of_calculation + '\Plots\Filtered_error100' + '.jpeg',
                     format='jpeg')
+
+        print('xz_error', self.total_xz_error*100/(res**3), '%')
+        print('yz_error', self.total_yz_error*100/(res**3), '%')
+        print('xz_error', self.total_xz_error*100/(res**3), '%')
 
 
         error_list.sort()
         filtered_error = error_list[0: int(0.9*res**3)]
 
         filtered_global_error = sum(filtered_error)/(0.9*res**3)
-        print('filtered_global_error90 = ' + str(filtered_global_error) + ' %')
+        #print('filtered_global_error90 = ' + str(filtered_global_error) + ' %')
+        print(str(filtered_global_error) + ' %')
         plt.figure()
         plt.hist(filtered_error,bins=100)
         plt.savefig('..\Output\calculations_' + settings.Name_of_calculation + '\Plots\Filtered_error90' + '.jpeg',
@@ -100,7 +137,8 @@ class Error:
         filtered_error2 = error_list[0: int(0.75*res**3)]
 
         filtered_global_error2 = sum(filtered_error2)/(0.9*res**3)
-        print('filtered_global_error = ' + str(filtered_global_error2) + ' %')
+        #print('filtered_global_error = ' + str(filtered_global_error2) + ' %')
+        print(str(filtered_global_error2) + ' %')
         plt.figure()
         plt.hist(filtered_error2,bins=100)
         plt.savefig('..\Output\calculations_' + settings.Name_of_calculation + '\Plots\Filtered_error75' + '.jpeg',
@@ -314,9 +352,7 @@ class Error:
         plt.ylim(axis2_lim)
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        Q = plt.quiver(X, Y, u_, v_, scale= settings.quiver_scale, angles='xy')
-        plt.quiverkey(Q, 0.85, 0.83, settings.arrow_legenda, settings.arrow_legenda_string, labelpos='E',
-                           coordinates='figure')
+        plt.quiver(X, Y, u_, v_, scale= settings.quiver_scale, angles='xy')
         plt.streamplot(X, Y, u_, v_, linewidth=1)
         plt.title('Reconstructed Field at ' + axis + '= ' + str(round(height,3)))
         plt.gca().set_aspect('equal', adjustable='box')
@@ -334,9 +370,7 @@ class Error:
         plt.ylim(axis2_lim)
         plt.xlabel(axis1_name + '-axis')
         plt.ylabel(axis2_name + '-axis')
-        Q = plt.quiver(x, y, u_, v_, angles='xy')
-        plt.quiverkey(Q, 0.9, 0.9, 0.1, r'$ 0.1 \frac{m}{s}$', labelpos='E',
-                           coordinates='figure')
+        plt.quiver(x, y, u_, v_, angles='xy')
         plt.streamplot(X, Y, u_, v_,linewidth=1)
         plt.title('Original Field at ' + axis + '= ' + str(height))
         plt.gca().set_aspect('equal', adjustable='box')

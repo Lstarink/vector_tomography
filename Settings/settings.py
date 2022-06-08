@@ -29,20 +29,39 @@ x = sp.symbols('x')
 y = sp.symbols('y')
 z = sp.symbols('z')
 
-n1 = 3
+n1 = 1.5
 n2 = 3
 theta = sp.pi/4
 
-x_ = sp.cos(theta)*(x-0.101) - sp.sin(theta)*(y-0.101)
-y_ = sp.sin(theta)*(x-0.101) + sp.cos(theta)*(y-0.101)
+# x_ = sp.cos(theta)*(x-0.101) - sp.sin(theta)*(y-0.101)
+# y_ = sp.sin(theta)*(x-0.101) + sp.cos(theta)*(y-0.101)
+#
+# u_ = ((sp.Float(0.3)) * y_ + sp.Float(0.6)*sp.cos(sp.pi*n2*y_/0.101))
+# v_ = (-(sp.Float(0.3))*x_ +sp.Float(0.6)*sp.sin(sp.pi*n2*x_/0.101))
+# w = (sp.Float(4.0))
+#
+# u = sp.cos(theta+sp.pi/2)*u_ - sp.sin(theta+sp.pi/2)*v_
+# v = sp.sin(theta+sp.pi/2)*u_ + sp.cos(theta+sp.pi/2)*v_
 
-u_ = ((sp.Float(0.3)) * y_ + sp.Float(0.6)*sp.cos(sp.pi*n2*y_/0.101))
-v_ = (-(sp.Float(0.3))*x_ +sp.Float(0.6)*sp.sin(sp.pi*n2*x_/0.101))
-w = (sp.Float(4.0))
-
-u = sp.cos(theta+sp.pi/2)*u_ - sp.sin(theta+sp.pi/2)*v_
-v = sp.sin(theta+sp.pi/2)*u_ + sp.cos(theta+sp.pi/2)*v_
-
+# u = (sp.Float(0.4)) * (y-0.101) + sp.Float(0.6)*sp.cos(sp.pi*n2*z/0.101)+ sp.Float(0.6)*sp.cos(sp.pi*n2*y/0.101) -(sp.Float(0.4)) * (x-0.101)
+# v = -(sp.Float(0.4))* (x-0.101) + sp.Float(0.6)*sp.sin(sp.pi*n2*x/0.101)-(sp.Float(0.4)) * (y-0.101)
+# w = (sp.Float(2.0)) + sp.Float(6)*sp.sin(sp.pi*n2*x/0.101) +sp.Float(2)*(z+1)
+#XZ
+# u = sp.Float(0.5)*sp.cos(sp.pi*n2*z/0.101)
+# v = sp.Float(0.0)
+# w = (sp.Float(4.0)) + sp.Float(6)*sp.sin(sp.pi*n1*x/0.101)
+#XY
+# u = sp.Float(0.5)*sp.cos(sp.pi*n1*y/0.101)
+# v = sp.Float(0.5)*sp.sin(sp.pi*n2*x/0.101)
+# w = sp.Float(4.0)
+#Divergence
+# u = sp.Float(2)*(x-0.101)
+# v = sp.Float(2)*(y-0.101)
+# w = sp.Float(4.0)*(z+1)
+#Curl
+u = sp.Float(2)*(y-0.101)
+v = -sp.Float(2)*(x-0.101)
+w = sp.Float(4.0)
 
 """Settings for intersections"""
 intersection_boundary_edge_x = 0.005 #meters, defines a boundary layer around the edge of the setup for which intersections will not be included, generally to exclude the sensors as intersections
@@ -51,9 +70,10 @@ intersection_boundary_edge_z = 0.000
 use_only_full_rank_intersections = False
 
 """Settings for error of the sensors"""
+quickplot = False
 use_sensor_error = True
-sensor_stddev = 0.000433 #meters
-temperature_increase = 0.0 #kelvin
+sensor_stddev = 0.000450 #meters
+temperature_increase = 1.0#kelvin
 
 
 """Settings for Gram Matrix"""
@@ -79,16 +99,16 @@ plot_intersection_field = False
 plot_interpolated = False
 plot_error = False and generate_your_own_measurement
 
-save_figures = False #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
+save_figures = quickplot #Letop hij slaat alleen onderstaande plotjes op en slaat ze alleen op als je de plot instelling ook op True hebt staan.
 only_combined = False
 plot_interpolated_resolution = 25  #bepaalt hoeveel pijlen er worden geplot. 11 houdt het overzichtelijk vindt ik, Maar hier kun je zelf mee spelen.
 plot_amount_of_interpolated_slices = 3 #Bepaalt hoeveel slices je te zien krijgt in x y en z richting
 inplane_error = True
-arrow_legenda = 5 #Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
-arrow_legenda_string = r'$5.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
+arrow_legenda = 1 #Bepaalt hoe groot het legenda pijltje rechtsbovenin is bij de plotjes. Zorg dat het dezelfde orde van grote heeft als je vector veld!
+arrow_legenda_string = r'$1.0\frac{m}{s}$' # Vul hier in wat je bij de regel hierboven heb gezet
 
-plot_field_sliced = False
-plot_error_sliced = False and generate_your_own_measurement
+plot_field_sliced = quickplot
+plot_error_sliced = quickplot and generate_your_own_measurement
 show_sliced = False and plot_error_sliced
 calculate_error = True and generate_your_own_measurement
 

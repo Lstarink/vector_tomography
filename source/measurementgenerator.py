@@ -146,7 +146,10 @@ class Measurement_setup:
             d0 = line.length
             v_perfect = line.V_average(field)
             if settings.use_sensor_error:
-                delta = ((2*d0*c/v_perfect) - np.sqrt((2*d0*c/v_perfect)**2 - 2*d0**2))/2
+                if np.abs(v_perfect) < 0.001:
+                    delta = 0
+                else:
+                    delta = ((2*d0*c/v_perfect) - np.sqrt((2*d0*c/v_perfect)**2 - 2*d0**2))/2
                 d1 = d0-delta
                 d2 = d0+delta
                 v_check = 2*(d0/d1 -d0/d2)*c
